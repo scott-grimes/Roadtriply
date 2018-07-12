@@ -19,6 +19,19 @@ USE db;
 DROP TABLE IF EXISTS `users`;
 		
 CREATE TABLE `users` (
+  `id` INTEGER AUTO_INCREMENT NOT NULL,
+  `createdAt` DATE,
+  `updatedAt` DATE,
+  `fbid` TEXT,
+  `username` TEXT,
+  PRIMARY KEY (`id`)
+);
+
+ALTER TABLE users AUTO_INCREMENT = 1000;
+
+DROP TABLE IF EXISTS `rides`;
+		
+CREATE TABLE `rides` (
   `id` INTEGER NOT NULL,
   `createdAt` DATE,
   `updatedAt` DATE,

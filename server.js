@@ -28,25 +28,32 @@ function isLoggedIn(req, res, next) {
 app.get('/ride', (req,res)=>{
   res.status(200).send('heres a ride!')
 });
-
+ 
 app.get('/user', (req,res)=>{
   res.status(200).send('heres a user!')
 });
 
-app.get('/signup',(req,res)=>{
-  res.status(200).send('heres the signup page');
-})
-
 app.post('/signup',(req,res)=>{
+
   console.log(req.body)
-  db.addUser()
-  .then(result=>{
+  const {username, fbid } = req.body;
+  if(!req.body || !username || !fbid ){
+
+    res.status(400).send('Must have credentials to signup')
+
+  }else{
+
+    db.addUser(username, fbid)
+    .then(result=>{
+      console.log(result)
     if(result){
       res.status(200).send('user signed up');
     }else{
       res.status(400).send('user signup failed');
     }
   })
+  }
+  
   
 })
 

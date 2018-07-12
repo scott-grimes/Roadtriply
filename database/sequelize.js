@@ -11,15 +11,26 @@ const sequelize = new Sequelize(
 );
 
 
+// SCHEMAS
+
+
 const User = sequelize.define('users', {
   fbid: Sequelize.TEXT,
   username: Sequelize.TEXT
 });
 
+const Ride = sequelize.define('rides', {
+  fbid: Sequelize.TEXT,
+  username: Sequelize.TEXT
+});
+
+
+
+
+
+
+
 sequelize.User = User;
-
-
-
 
 sequelize
   .authenticate()
