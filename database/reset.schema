@@ -1,0 +1,46 @@
+-- ---
+-- Globals
+-- ---
+
+-- SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+-- SET FOREIGN_KEY_CHECKS=0;
+
+-- ---
+-- Table 'users'
+-- 
+-- ---
+
+DROP DATABASE IF EXISTS db;
+
+CREATE DATABASE db;
+
+USE db;
+
+DROP TABLE IF EXISTS `users`;
+		
+CREATE TABLE `users` (
+  `id` INTEGER NOT NULL,
+  `createdAt` DATE,
+  `updatedAt` DATE,
+  `fbid` TEXT,
+  `username` TEXT,
+  PRIMARY KEY (`id`)
+);
+
+-- ---
+-- Foreign Keys 
+-- ---
+
+
+-- ---
+-- Table Properties
+-- ---
+
+-- ALTER TABLE `users` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+-- ---
+-- Test Data
+-- ---
+
+-- INSERT INTO `users` (`id`) VALUES
+-- ('');

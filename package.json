@@ -1,0 +1,34 @@
+{
+  "name": "roadtriply",
+  "version": "1.0.0",
+  "description": "Free ride-sharing app for road trips",
+  "main": "index.js",
+  "scripts": {
+    "client": "cd client && npm run start",
+    "server": "nodemon server.js",
+    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
+    "start": "node server.js",
+    "heroku-postbuild": "cd client && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/scott-grimes/Roadtriply.git"
+  },
+  "author": "Scott Grimes",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/scott-grimes/Roadtriply/issues"
+  },
+  "homepage": "https://github.com/scott-grimes/Roadtriply#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "concurrently": "^3.6.0",
+    "dotenv": "^6.0.0",
+    "express": "^4.16.3",
+    "mysql": "^2.15.0",
+    "mysql2": "^1.5.3",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "sequelize": "^4.38.0"
+  }
+}
