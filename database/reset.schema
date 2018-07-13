@@ -24,6 +24,8 @@ CREATE TABLE `users` (
   `updatedAt` DATE,
   `fbid` TEXT,
   `username` TEXT,
+  `email` TEXT,
+  `phone` TEXT,
   PRIMARY KEY (`id`)
 );
 
@@ -35,15 +37,27 @@ CREATE TABLE `rides` (
   `id` INTEGER AUTO_INCREMENT NOT NULL,
   `createdAt` DATE,
   `updatedAt` DATE,
-  `driverid` TEXT,
+  `driverid` INTEGER,
   `ridercount` INTEGER,
-  `toloc` TEXT,
-  `fromloc` TEXT,
+  `fromdest` TEXT,
+  `todest` TEXT,
   `depttime` TIMESTAMP,
   PRIMARY KEY (`id`)
 );
 
 ALTER TABLE rides AUTO_INCREMENT = 1000;
+
+CREATE TABLE `manifests` (
+  `id` INTEGER AUTO_INCREMENT NOT NULL,
+  `createdAt` DATE,
+  `updatedAt` DATE,
+  `driverid` INTEGER,
+  `riderid` INTEGER,
+  `statuscode` INTEGER,
+  PRIMARY KEY (`id`)
+);
+
+ALTER TABLE manifests AUTO_INCREMENT = 1000;
 
 -- ---
 -- Foreign Keys 
