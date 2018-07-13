@@ -32,13 +32,18 @@ ALTER TABLE users AUTO_INCREMENT = 1000;
 DROP TABLE IF EXISTS `rides`;
 		
 CREATE TABLE `rides` (
-  `id` INTEGER NOT NULL,
+  `id` INTEGER AUTO_INCREMENT NOT NULL,
   `createdAt` DATE,
   `updatedAt` DATE,
-  `fbid` TEXT,
-  `username` TEXT,
+  `driverid` TEXT,
+  `ridercount` INTEGER,
+  `toloc` TEXT,
+  `fromloc` TEXT,
+  `depttime` TIMESTAMP,
   PRIMARY KEY (`id`)
 );
+
+ALTER TABLE rides AUTO_INCREMENT = 1000;
 
 -- ---
 -- Foreign Keys 

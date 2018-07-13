@@ -6,6 +6,7 @@ const mysql = require('mysql2');
 require('./database/sequelize');
 const passport = require('passport')
 const db = require('./database/db');
+const controller = require('./controller');
 //require('./database/passport')(passport);
 
 // SETUP
@@ -43,17 +44,9 @@ app.post('/signup',(req,res)=>{
 
   }else{
 
-    db.addUser(username, fbid)
-    .then(result=>{
-      console.log(result)
-    if(result){
-      res.status(200).send('user signed up');
-    }else{
-      res.status(400).send('user signup failed');
-    }
-  })
+    controller.addUser(req,res,username,fbid);
+
   }
-  
   
 })
 
@@ -66,11 +59,34 @@ app.post('/signup',(req,res)=>{
 // AUTHENTICATED
 
 app.get('/account',isLoggedIn, (req,res)=>{
+
 res.status(200).send('you are logged in heres your account')
 });
 
+app.post('/ride', isLoggedIn, (req,res)=>{
+  
+  console.log(req.body);
+  const {ridercount, fromloc, toloc, depttime} = req.body;
+  if(!ridercount|| !fromloc|| !toloc|| !depttime){
+
+    res.status(400).send('Not enough info given to add ride')
+
+  }else{
+
+    controller.addRide(req,res,ridercount, fromloc, toloc, depttime);
+
+  }
+
+});
+
 app.post('/logout', isLoggedIn, (req,res)=>{
-  res.status(200).send('logout success')
+  req.session.destroy(function (err) {
+    if(err){
+      console.log(err)
+    }else{
+      res.redirect('/'); 
+    }
+  });
 });
 
 // START SERVER

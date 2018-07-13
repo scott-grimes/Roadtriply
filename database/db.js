@@ -3,8 +3,7 @@ const {sequelize} = require('./sequelize');
 
 // Add User
 const addUser =  (username, fbid) => {
-  // create new user object
-  console.log(sequelize.User);
+
   return sequelize.User.create({
     username:username,
     fbid:fbid
@@ -16,8 +15,9 @@ const addUser =  (username, fbid) => {
   console.log(err)
   console.log('Could not create new user')
   return false;
-})
-}
+});
+};
+
 
 //sequelize.query()
 
@@ -30,6 +30,25 @@ const addUser =  (username, fbid) => {
 
 // Add ride
 
+const addRide = (driverid, ridercount, fromloc, toloc, depttime )=>{
+
+  return sequelize.Ride.create({
+    driverid: driverid,
+    ridercount: ridercount,
+    toloc: toloc,
+    fromloc: fromloc,
+    depttime: new Date(depttime)
+  }).then(()=>{
+    console.log('ride created')
+    return true;
+  }
+).catch((err)=>{
+  console.log(err)
+  console.log('Could not create new ride')
+  return false;
+})
+}
+
 
 // Get Ride
 
@@ -40,4 +59,4 @@ const addUser =  (username, fbid) => {
 
 
 // 
-module.exports.addUser = addUser;
+module.exports = { addUser, addRide};

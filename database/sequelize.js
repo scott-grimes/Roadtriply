@@ -20,17 +20,18 @@ const User = sequelize.define('users', {
 });
 
 const Ride = sequelize.define('rides', {
-  fbid: Sequelize.TEXT,
-  username: Sequelize.TEXT
+  driverid: Sequelize.INTEGER,
+  ridercount: Sequelize.INTEGER,
+  toloc: Sequelize.TEXT,
+  fromloc: Sequelize.TEXT,
+  depttime: Sequelize.TIME
 });
 
 
 
 
-
-
-
 sequelize.User = User;
+sequelize.Ride = Ride;
 
 sequelize
   .authenticate()
