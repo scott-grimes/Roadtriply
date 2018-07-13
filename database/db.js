@@ -52,13 +52,16 @@ const self = module.exports = {
 
   // returns all rides meeting the given criteria
   
-  searchRides : ( fromloc, toloc, depttimeBEGIN, depttimeEND )=>{
-    if(!fromloc || !toloc || !depttime){
-      throw('Quer(ies) missing!')
-    }
+  searchRides : ( fromloc, toloc, depttimeStr )=>{
+    const starttime = new Date(depttimeStr);
+    starttime.setHours(0,0,0,0);
+
+    var endtime = new Date(depttimeStr);
+    endtime.setHours(23,59,59,999);
+
     return knex('rides')
-    .where({'fromloc': fromloc, 'toloc':toloc})
-    .andWhere(()=>this.whereBetween('depttime', [depttimeBEGIN, depttimeEND]))
+    .whereBetween('depttime', [starttime, endtime])
+    .andWhere({'fromloc': fromloc, 'toloc':toloc})
     .select()
   },
 

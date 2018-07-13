@@ -20,8 +20,8 @@ DROP TABLE IF EXISTS `users`;
 		
 CREATE TABLE `users` (
   `id` INTEGER AUTO_INCREMENT NOT NULL,
-  `createdAt` DATE,
-  `updatedAt` DATE,
+  `createdAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `fbid` TEXT,
   `username` TEXT,
   `email` TEXT,
@@ -32,16 +32,16 @@ CREATE TABLE `users` (
 ALTER TABLE users AUTO_INCREMENT = 1000;
 
 DROP TABLE IF EXISTS `rides`;
-		
+
 CREATE TABLE `rides` (
   `id` INTEGER AUTO_INCREMENT NOT NULL,
-  `createdAt` DATE,
-  `updatedAt` DATE,
+  `createdAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `driverid` INTEGER,
   `ridercount` INTEGER,
-  `fromdest` TEXT,
-  `todest` TEXT,
-  `depttime` TIMESTAMP,
+  `fromloc` TEXT,
+  `toloc` TEXT,
+  `depttime` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 );
 
@@ -49,8 +49,8 @@ ALTER TABLE rides AUTO_INCREMENT = 1000;
 
 CREATE TABLE `manifests` (
   `id` INTEGER AUTO_INCREMENT NOT NULL,
-  `createdAt` DATE,
-  `updatedAt` DATE,
+  `createdAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `rideid` INTEGER,
   `passengerid` INTEGER,
   `statuscode` INTEGER,

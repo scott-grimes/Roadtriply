@@ -5,9 +5,9 @@ const axios = require('axios');
 module.exports = {
   
   
-  searchRides : (fromloc, toloc, depttimeBEGIN, depttimeEND )=>{
+  searchRides : (fromloc, toloc, depttime )=>{
     return axios.get('/rides',{
-      params: {fromloc, toloc, depttimeBEGIN, depttimeEND }
+      params: {fromloc, toloc, depttime }
     })
     .then((res)=>console.log(res))
   },

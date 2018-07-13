@@ -36,8 +36,15 @@ app.get('/test',(req,res)=>{
 // Search for all rides meeting the given specifications
 app.get('/rides', (req,res)=>{
   let rides;
-  const {fromloc, toloc, depttimeBEGIN, depttimeEND} = req.query;
-  db.searchRides(fromloc, toloc, depttimeBEGIN, depttimeEND)
+ 
+  const {fromloc, toloc, depttime} = req.query;
+  console.log(fromloc, toloc, depttime)
+  if(!fromloc || !toloc || !depttime){
+    res.status(400).send('Quer(ies) missing!')
+    return;
+  }
+
+  db.searchRides(fromloc, toloc, depttime)
   .then(result=>{
     if(!result){
       res.status(400).send('No ride exists with that id');

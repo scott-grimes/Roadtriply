@@ -79,20 +79,20 @@ const genRandomUser = ()=>{
   const fbid = randFbId();
   const phone = getRandomPhone();
   const id = userID;
+
   userID++;
   return {username, fbid, id, email, phone};
 }
 
 const genRandomRide = () => {
-
   const driverid = randomUsers[  Math.floor(Math.random()*randomUsers.length) ].id;
-  const fromdest = cities[Math.floor(Math.random() * (cities.length - 2))];
-  const todest = cities[cities.indexOf(fromdest) + 1];
+  const fromloc = cities[Math.floor(Math.random() * (cities.length - 2))];
+  const toloc = cities[cities.indexOf(fromloc) + 1];
   const depttime = new Date( getRandomTime() );
   const ridercount = randRiderCount();
   const id = rideID;
   rideID++;
-  return { driverid, id, fromdest, todest, depttime, ridercount };
+  return {driverid, id, fromloc, toloc, depttime, ridercount };
 }
 
 const genRandomManifest = ()=>{
@@ -101,7 +101,8 @@ const genRandomManifest = ()=>{
   const rideid = ride.id;
   const passengerid = randomUsers[  Math.floor(Math.random()*randomUsers.length) ].id
   const statuscode = Math.floor(Math.random()*2);
-   const id = manifestID;
+  const id = manifestID;
+
   manifestID++;
   return {rideid, id, passengerid, statuscode};
 }
@@ -121,7 +122,6 @@ const knex = require('knex')({
     database : 'db'
   }
 })
-
 
 knex.insert(randomUsers).into('users')
 .then(()=>console.log('random users inserted'))
