@@ -100,6 +100,19 @@ const self = module.exports = {
     .catch(()=>400)
   },
 
+ // add the passenger to the ride specified, if there is enough space
+ removePassenger : (passengerid, rideid)=>{
+  return self.getNumFreeSlots(rideid)
+  .then((freeslots=>{
+    if(!freeslots){
+      throw('No Space to add user')
+    }
+  }))
+  .then(()=>knex('manifests').where({passengerid,rideid}).update({statuscode:0}))
+  .then(()=>200)
+  .catch(()=>400)
+},
+
   approvePassenger : (passengerid, rideid)=>{
     return self.getNumFreeSlots(rideid)
     .then((freeslots=>{
@@ -111,12 +124,6 @@ const self = module.exports = {
     .then(()=>200)
     .catch(()=>400)
   },
-
-
-
-// Login User
- 
-// Logout User
 
 
 // Add ride
@@ -140,14 +147,4 @@ const self = module.exports = {
 })
 }
 
-
-// Get Ride
-
-
-
-// Get rides
-
-
-
-// 
  };

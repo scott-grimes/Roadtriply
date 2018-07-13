@@ -10,7 +10,7 @@ const db = require('./database/db');
 
 // SETUP
 const app = express();
-app.use(bodyParser.json())
+app.use(bodyParser.json());
 const port = process.env.PORT || 1337;
 
 // MIDDLEWARE
@@ -23,52 +23,56 @@ function isLoggedIn(req, res, next) {
 
 // ENDPOINTS
 app.get('/test',(req,res)=>{
-
-
   db.getNumFreeSlots( req.query.id )
   .then((ans)=>{
      console.log(ans)
   console.log(typeof ans)
   res.send(ans);
   })
- 
 })
 
 // UNAUTHENTICATED
 
-// GET RIDE BY ID
+// GET RIDE BY ID (includes # free slots)
 app.get('/ride', (req,res)=>{
+  let ride;
   if(!req.query.id){
     res.status(400).send('No ride id specified');
-  }else{
-    db.getRideById(req.query.id)
-    .then(result=>{
-      if(!result){
-        res.status(400).send('No ride exists with that id');
-      }
-      else{
-        res.status(200).send(result);
-      }
-    })
+    return;
   }
+  db.getRideById(req.query.id)
+  .then(result=>{
+    if(!result){
+      res.status(400).send('No ride exists with that id');
+    }
+    ride = result;
+  })
+  .then(()=>db.getNumFreeSlots(ride.id))
+  .then(freeslots=>{
+    ride['freeslots'] = freeslots;
+    res.status(200).send(ride);
+  });
 });
 
 // GET USER BY ID
 app.get('/user', (req,res)=>{
   if(!req.query.id){
     res.status(400).send('No user id specified');
-  }else{
-    db.getUserById(req.query.id)
-    .then(result=>{
-      if(!result){
-        res.status(400).send('No user exists with that id');
-      }
-      else{
-        res.status(200).send(result);
-      }
-    })
+    return;
   }
+
+  db.getUserById(req.query.id)
+  .then(result=>{
+    if(!result){
+      res.status(400).send('No user exists with that id');
+    }
+    else{
+      res.status(200).send(result);
+    }
+  });
 });
+
+
 
 
 // app.post('/login', passport.authenticate('mySignup',{
@@ -102,6 +106,9 @@ app.get('/manifest',(req,res)=>{
 
 })
 
+// ADD NEW RIDER TO A RIDE
+
+
 // ADD NEW USER TO DB
 app.post('/user',(req,res)=>{
 
@@ -121,6 +128,47 @@ app.post('/user',(req,res)=>{
   
 })
 
+// ADD NEW PASSENGER TO RIDE
+app.post('/addpassenger',(req,res)=>{
+
+  const {passengerid, rideid} = req.body;
+  if(!req.body || !passengerid || !rideid){
+
+    res.status(400).send('Invalid credentials or ride id')
+
+  }else{
+
+    db.addPassenger(passengerid, rideid)
+    .then(rescode=>{
+      res.status(rescode).send()
+    })
+
+  }
+  
+})
+
+// REMOVE PASSENGER FROM RIDE
+// sets status code to 0
+app.post('/addpassenger',(req,res)=>{
+
+  const {username,fbid,email,phone} = req.body;
+  if(!req.body || !username || !fbid || !email || !phone){
+
+    res.status(400).send('Must have credentials to signup')
+
+  }else{
+
+    db.addUser(username,fbid,email,phone)
+    .then(rescode=>{
+      res.status(rescode).send()
+    })
+
+  }
+  
+})
+
+
+
 // SHOW LOGGED IN USERS ACCOUNT
 // app.get('/account',isLoggedIn, (req,res)=>{
 
@@ -137,7 +185,7 @@ app.post('/ride', isLoggedIn, (req,res)=>{
 
   }else{
 
-    controller.addRide(req,res,ridercount, fromloc, toloc, depttime);
+    db.addRide(driverid, ridercount, fromloc, toloc, depttime);
 
   }
 
