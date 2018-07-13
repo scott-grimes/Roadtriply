@@ -4,12 +4,11 @@
   "description": "Free ride-sharing app for road trips",
   "main": "index.js",
   "scripts": {
-    "client": "cd client && npm run start",
-    "server": "nodemon server.js",
-    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
+    "react-dev": "webpack -d --watch",
+    "server": "nodemon ./server/server.js",
+    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run react-dev\"",
     "start": "node server.js",
-    "resetdb": "mysql -u student -pstudent < database/reset.schema && node database/testdata.js",
-    "heroku-postbuild": "cd client && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
+    "resetdb": "mysql -u student -pstudent < database/reset.schema && node database/testdata.js"
   },
   "repository": {
     "type": "git",
@@ -27,10 +26,18 @@
     "knex": "^0.15.1",
     "mysql2": "^1.5.3",
     "passport": "^0.4.0",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "path": "^0.12.7",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2"
   },
   "devDependencies": {
     "concurrently": "^3.6.0",
-    "dotenv": "^6.0.0"
+    "dotenv": "^6.0.0",
+    "babel-core": "^6.23.1",
+    "babel-loader": "^6.3.2",
+    "babel-preset-es2015": "^6.22.0",
+    "babel-preset-react": "^6.23.0",
+    "webpack": "^2.2.1"
   }
 }

@@ -1,11 +1,11 @@
 require('dotenv').config();
-
+const path = require('path')
 const express = require('express');
 const bodyParser = require('body-parser');
 const mysql2 = require('mysql2');
-require('./database/knex');
-const passport = require('passport')
-const db = require('./database/db');
+require('../database/knex');
+const db = require('../database/db');
+//const passport = require('passport')
 //require('./database/passport')(passport);
 
 // SETUP
@@ -145,7 +145,7 @@ app.post('/addpassenger',(req,res)=>{
 
   }
   
-})
+});
 
 // REMOVE PASSENGER FROM RIDE
 // sets status code to 0
@@ -165,7 +165,7 @@ app.post('/addpassenger',(req,res)=>{
 
   }
   
-})
+});
 
 
 
@@ -203,11 +203,9 @@ app.post('/ride', isLoggedIn, (req,res)=>{
 
 // START SERVER
 
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, 'client/build')));
-  app.get('*', function(req, res) {
-    res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
-  });
-}
 
+app.use(express.static(path.join(__dirname, '../client/dist')));
+app.get('*',(req,res)=>{
+  res.redirect('/')
+})
 app.listen(port, () => console.log(`Listening on port ${port}`));
