@@ -1,22 +1,25 @@
-const {sequelize} = require('./sequelize');
-
-
+const {knex} = require('./knex');
+module.exports = {
 // Add User
-const addUser =  (username, fbid) => {
+ addUser :  (username,fbid,email,phone) => {
+  return getUser(fbid)
+  .then(user=>{
+    if(user){
+      throw('User already exists');
+    }}
+  )
+  .then(knex.insert({username,fbid,email,phone}).into('users'))
+  .then(()=>200)
+  .catch(()=>409)
+  
+},
 
-  return sequelize.User.create({
-    username:username,
-    fbid:fbid
-  }).then(()=>{
-    console.log('user created')
-    return true;
-  }
-).catch((err)=>{
-  console.log(err)
-  console.log('Could not create new user')
-  return false;
-});
-};
+// Returns a user based on their fbid
+ getUser : (fbid)=> {
+  return knex('users')
+  .where('fbid', fbid)
+  .select().first();
+},
 
 
 //sequelize.query()
@@ -30,8 +33,8 @@ const addUser =  (username, fbid) => {
 
 // Add ride
 
-const addRide = (driverid, ridercount, fromloc, toloc, depttime )=>{
-
+ addRide :(driverid, ridercount, fromloc, toloc, depttime )=>{
+return;
   return sequelize.Ride.create({
     driverid: driverid,
     ridercount: ridercount,
@@ -59,4 +62,4 @@ const addRide = (driverid, ridercount, fromloc, toloc, depttime )=>{
 
 
 // 
-module.exports = { addUser, addRide};
+ };

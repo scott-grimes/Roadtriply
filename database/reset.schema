@@ -51,8 +51,8 @@ CREATE TABLE `manifests` (
   `id` INTEGER AUTO_INCREMENT NOT NULL,
   `createdAt` DATE,
   `updatedAt` DATE,
-  `driverid` INTEGER,
-  `riderid` INTEGER,
+  `rideid` INTEGER,
+  `passengerid` INTEGER,
   `statuscode` INTEGER,
   PRIMARY KEY (`id`)
 );

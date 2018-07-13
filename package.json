@@ -8,6 +8,7 @@
     "server": "nodemon server.js",
     "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
     "start": "node server.js",
+    "resetdb": "mysql -u student -pstudent < database/reset.schema && node database/testdata.js",
     "heroku-postbuild": "cd client && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
   },
   "repository": {
@@ -22,13 +23,14 @@
   "homepage": "https://github.com/scott-grimes/Roadtriply#readme",
   "dependencies": {
     "body-parser": "^1.18.3",
-    "concurrently": "^3.6.0",
-    "dotenv": "^6.0.0",
     "express": "^4.16.3",
-    "mysql": "^2.15.0",
+    "knex": "^0.15.1",
     "mysql2": "^1.5.3",
     "passport": "^0.4.0",
-    "passport-local": "^1.0.0",
-    "sequelize": "^4.38.0"
+    "passport-local": "^1.0.0"
+  },
+  "devDependencies": {
+    "concurrently": "^3.6.0",
+    "dotenv": "^6.0.0"
   }
 }

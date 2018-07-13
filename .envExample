@@ -1,4 +1,4 @@
 PORT=1337
 DBHOST=localhost
-DBUSERNAME=bob
-DBPASSWORD=password
+DBUSERNAME=student
+DBPASSWORD=student

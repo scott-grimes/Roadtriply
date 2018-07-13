@@ -2,8 +2,8 @@ require('dotenv').config();
 
 const express = require('express');
 const bodyParser = require('body-parser');
-const mysql = require('mysql2');
-require('./database/sequelize');
+const mysql2 = require('mysql2');
+require('./database/knex');
 const passport = require('passport')
 const db = require('./database/db');
 const controller = require('./controller');
@@ -23,6 +23,18 @@ function isLoggedIn(req, res, next) {
 }
 
 // ENDPOINTS
+app.post('/test',(req,res)=>{
+
+  let user = 
+  db.getUser( req.body.fbid )
+  .then(res=> {user=res})
+  .then(()=>{
+     console.log(user)
+  console.log(typeof user)
+  res.send(JSON.stringify(user));
+  })
+ 
+})
 
 // UNAUTHENTICATED
 
