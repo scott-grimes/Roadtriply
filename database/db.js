@@ -66,9 +66,50 @@ const self = module.exports = {
     .catch(()=>null)
   },
 
-  // Returns a list of all the confirmed passengers a given ride has
-  getConfirmedPassengers : (rideid)=>{
+  // Returns num of free slots a ride has
+  getNumFreeSlots : (rideid)=>{
+    let ride;
+    return self.getRideById(rideid)
+    .then(res=>{
+      if(!res){
+        throw('Ride does not exist');
+      }
+      ride = res;
+    })
+    .then(()=>
+      knex('manifests')
+      .where({'rideid': rideid, 'statuscode':1})
+      .select()
+    )
+    .then((confirmedPassengers)=>{
+      return ride.ridercount - confirmedPassengers.length;
+    })
+    .catch(()=>null)
+  },
 
+  // add the passenger to the ride specified, if there is enough space
+  addPassenger : (passengerid, rideid)=>{
+    return self.getNumFreeSlots(rideid)
+    .then((freeslots=>{
+      if(!freeslots){
+        throw('No Space or Ride does not exist')
+      }
+    }))
+    .then(()=>knex.insert({passengerid,rideid, statuscode:0}).into('manifests'))
+    .then(()=>200)
+    .catch(()=>400)
+  },
+
+  approvePassenger : (passengerid, rideid)=>{
+    return self.getNumFreeSlots(rideid)
+    .then((freeslots=>{
+      if(!freeslots){
+        throw('No Space to add user')
+      }
+    }))
+    .then(()=>knex('manifests').where({passengerid,rideid}).update({statuscode:1}))
+    .then(()=>200)
+    .catch(()=>400)
   },
 
 

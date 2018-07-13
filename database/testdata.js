@@ -1,9 +1,12 @@
 const cities = require('../lib/citylist').cities;
-var names = ['Leisa Labarre',
+let rideID = 1000;
+let userID = 1000;
+let manifestID = 1000;
+const names = ['Leisa Labarre',
   'Mardell Mallery',
   'Lieselotte Lawyer',
   'Grayce Gallogly',
-  'Velva Varnadoe',
+  'Velva constnadoe',
   'Debora Demeter',
   'Rina Ramsey',
   'Russel Risner',
@@ -51,54 +54,62 @@ var names = ['Leisa Labarre',
   'Rita Rudisill'
 ];
 
-var hour = 1000 * 60 * 60;
-var day = 24 * hour;
-var jan1st2019 = 1546300800000;
+const hour = 1000 * 60 * 60;
+const day = 24 * hour;
+const jan1st2019 = 1546300800000;
 
-var getRandomTime = () => {
+const getRandomTime = () => {
   // returns a random time in Jan 2019, on the hour
-  var rHour = Math.floor(Math.random() * 24);
-  var rDay = Math.floor(Math.random() * 30);
+  const rHour = Math.floor(Math.random() * 24);
+  const rDay = Math.floor(Math.random() * 30);
 
   return jan1st2019 + rHour * hour + rDay * day;
 
 }
 
-var randFbId = () => Math.floor(Math.random() * 100000000000).toString();
+const randFbId = () => Math.floor(Math.random() * 100000000000).toString();
 
-var randRiderCount = () => Math.floor(Math.random() * 4);
+const randRiderCount = () => Math.floor(Math.random() * 4)+1;
 
-var getRandomPhone = ()=>new Array(10).fill().map(x=>Math.floor(Math.random()*10).toString()).join('');
+const getRandomPhone = ()=>new Array(10).fill().map(x=>Math.floor(Math.random()*10).toString()).join('');
 
-var genRandomUser = (id)=>{
-  var username = names[Math.floor(Math.random() * (names.length - 1))];
-  var email = username.replace(' ','')+'@gmail.com'
-  var fbid = randFbId();
-  var phone = getRandomPhone();
+const genRandomUser = ()=>{
+  const username = names[Math.floor(Math.random() * (names.length - 1))];
+  const email = username.replace(' ','')+'@gmail.com'
+  const fbid = randFbId();
+  const phone = getRandomPhone();
+  const id = userID;
+  userID++;
   return {username, fbid, id, email, phone};
 }
 
-var genRandomRide = (id, driver) => {
-  var driverid = driver.id;
-  var fromdest = cities[Math.floor(Math.random() * (cities.length - 2))];
-  var todest = cities[cities.indexOf(fromdest) + 1];
-  var depttime = new Date( getRandomTime() );
-  var ridercount = randRiderCount();
+const genRandomRide = () => {
+
+  const driverid = randomUsers[  Math.floor(Math.random()*randomUsers.length) ].id;
+  const fromdest = cities[Math.floor(Math.random() * (cities.length - 2))];
+  const todest = cities[cities.indexOf(fromdest) + 1];
+  const depttime = new Date( getRandomTime() );
+  const ridercount = randRiderCount();
+  const id = rideID;
+  rideID++;
   return { driverid, id, fromdest, todest, depttime, ridercount };
 }
 
-var genRandomManifest = (id,ride)=>{
-  var rideid = ride.id;
-  var passengerid = id+ (Math.random()>.5? -1:1);
-  var statuscode = Math.floor(Math.random()*2);
+const genRandomManifest = ()=>{
+  const index = Math.floor(Math.random()*randomRides.length);
+  const ride = randomRides[index]
+  const rideid = ride.id;
+  const passengerid = randomUsers[  Math.floor(Math.random()*randomUsers.length) ].id
+  const statuscode = Math.floor(Math.random()*2);
+   const id = manifestID;
+  manifestID++;
   return {rideid, id, passengerid, statuscode};
 }
 
-var randomUsers = new Array(30).fill().map((x,i) => genRandomUser(i+1000));
-var randomRides = new Array(25).fill().map((x,i)=>genRandomRide(i+1000, randomUsers[i+1]));
 
-var randomManifests = new Array(20).fill().map((x,i)=>genRandomManifest(i+1000,randomRides[i+2]));
-
+const randomUsers = new Array(20).fill().map((x,i) => genRandomUser());
+const randomRides = new Array(40).fill().map((x,i)=>genRandomRide());
+const randomManifests = new Array(40).fill().map((x,i)=>genRandomManifest());
 
 const mysql2 = require('mysql2');
 const knex = require('knex')({

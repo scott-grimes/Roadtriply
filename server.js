@@ -22,15 +22,14 @@ function isLoggedIn(req, res, next) {
 }
 
 // ENDPOINTS
-app.post('/test',(req,res)=>{
+app.get('/test',(req,res)=>{
 
-  let user;
-  db.getUser( req.body.fbid )
-  .then(res=> {user=res})
-  .then(()=>{
-     console.log(user)
-  console.log(typeof user)
-  res.send(JSON.stringify(user));
+
+  db.getNumFreeSlots( req.query.id )
+  .then((ans)=>{
+     console.log(ans)
+  console.log(typeof ans)
+  res.send(ans);
   })
  
 })
