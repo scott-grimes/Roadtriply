@@ -1,23 +1,28 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import List from './components/List.jsx';
+import Navbar from './components/Navbar.jsx';
+import SearchBar from './components/SearchBar.jsx';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = { 
-      items: []
+      userid: null,
+      page: 'search'
     }
   }
 
   componentDidMount() {
-    this.setState({items:['a','b','c']})
+    // check to see if user is logged in
+
+    // if logged in, set state of loggedin to true
+   
   }
 
   render () {
     return (<div>
-      <h1>Item List</h1>
-      <List items={this.state.items}/>
+      <Navbar userid={this.state.userid}/>
+      <SearchBar />
     </div>)
   }
 }

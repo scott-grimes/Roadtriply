@@ -50,6 +50,18 @@ const self = module.exports = {
     .select().first();
   },
 
+  // returns all rides meeting the given criteria
+  
+  searchRides : ( fromloc, toloc, depttimeBEGIN, depttimeEND )=>{
+    if(!fromloc || !toloc || !depttime){
+      throw('Quer(ies) missing!')
+    }
+    return knex('rides')
+    .where({'fromloc': fromloc, 'toloc':toloc})
+    .andWhere(()=>this.whereBetween('depttime', [depttimeBEGIN, depttimeEND]))
+    .select()
+  },
+
   // Returns a list of all the passengers a given ride has (conf/unconfirmed)
   getAllPassengers : (rideid)=>{
     return self.getRideById(rideid)

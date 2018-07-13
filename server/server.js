@@ -33,6 +33,22 @@ app.get('/test',(req,res)=>{
 
 // UNAUTHENTICATED
 
+// Search for all rides meeting the given specifications
+app.get('/rides', (req,res)=>{
+  let rides;
+  const {fromloc, toloc, depttimeBEGIN, depttimeEND} = req.query;
+  db.searchRides(fromloc, toloc, depttimeBEGIN, depttimeEND)
+  .then(result=>{
+    if(!result){
+      res.status(400).send('No ride exists with that id');
+    }
+    rides = result;
+  })
+  .then(()=>{
+    res.status(200).send(rides);
+  });
+});
+
 // GET RIDE BY ID (includes # free slots)
 app.get('/ride', (req,res)=>{
   let ride;
