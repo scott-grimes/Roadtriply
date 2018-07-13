@@ -6,7 +6,6 @@ const mysql2 = require('mysql2');
 require('./database/knex');
 const passport = require('passport')
 const db = require('./database/db');
-const controller = require('./controller');
 //require('./database/passport')(passport);
 
 // SETUP
@@ -25,7 +24,7 @@ function isLoggedIn(req, res, next) {
 // ENDPOINTS
 app.post('/test',(req,res)=>{
 
-  let user = 
+  let user;
   db.getUser( req.body.fbid )
   .then(res=> {user=res})
   .then(()=>{
@@ -38,29 +37,40 @@ app.post('/test',(req,res)=>{
 
 // UNAUTHENTICATED
 
+// GET RIDE BY ID
 app.get('/ride', (req,res)=>{
-  res.status(200).send('heres a ride!')
-});
- 
-app.get('/user', (req,res)=>{
-  res.status(200).send('heres a user!')
-});
-
-app.post('/signup',(req,res)=>{
-
-  console.log(req.body)
-  const {username, fbid } = req.body;
-  if(!req.body || !username || !fbid ){
-
-    res.status(400).send('Must have credentials to signup')
-
+  if(!req.query.id){
+    res.status(400).send('No ride id specified');
   }else{
-
-    controller.addUser(req,res,username,fbid);
-
+    db.getRideById(req.query.id)
+    .then(result=>{
+      if(!result){
+        res.status(400).send('No ride exists with that id');
+      }
+      else{
+        res.status(200).send(result);
+      }
+    })
   }
-  
-})
+});
+
+// GET USER BY ID
+app.get('/user', (req,res)=>{
+  if(!req.query.id){
+    res.status(400).send('No user id specified');
+  }else{
+    db.getUserById(req.query.id)
+    .then(result=>{
+      if(!result){
+        res.status(400).send('No user exists with that id');
+      }
+      else{
+        res.status(200).send(result);
+      }
+    })
+  }
+});
+
 
 // app.post('/login', passport.authenticate('mySignup',{
 //   successRedirect : '/account', // redirect to the secure profile section
@@ -70,10 +80,53 @@ app.post('/signup',(req,res)=>{
 
 // AUTHENTICATED
 
-app.get('/account',isLoggedIn, (req,res)=>{
+// GET ALL PASSENGERS ON A RIDE (user must present the drivers fbid)
 
-res.status(200).send('you are logged in heres your account')
-});
+app.get('/manifest',(req,res)=>{
+  const rideid = req.query.id;
+  if(!req.body || !rideid){
+    res.status(400).send('Invalid Credentials or Ride Id')
+  }else{
+
+    db.getAllPassengers(rideid)
+    .then(list=>{
+      if(!list){
+        res.status(400).send('Ride does not exist')
+      }
+      else{
+        res.status(200).send(list)
+      }
+    })
+
+  }
+
+
+})
+
+// ADD NEW USER TO DB
+app.post('/user',(req,res)=>{
+
+  const {username,fbid,email,phone} = req.body;
+  if(!req.body || !username || !fbid || !email || !phone){
+
+    res.status(400).send('Must have credentials to signup')
+
+  }else{
+
+    db.addUser(username,fbid,email,phone)
+    .then(rescode=>{
+      res.status(rescode).send()
+    })
+
+  }
+  
+})
+
+// SHOW LOGGED IN USERS ACCOUNT
+// app.get('/account',isLoggedIn, (req,res)=>{
+
+// res.status(200).send('you are logged in heres your account')
+// });
 
 app.post('/ride', isLoggedIn, (req,res)=>{
   
@@ -91,15 +144,15 @@ app.post('/ride', isLoggedIn, (req,res)=>{
 
 });
 
-app.post('/logout', isLoggedIn, (req,res)=>{
-  req.session.destroy(function (err) {
-    if(err){
-      console.log(err)
-    }else{
-      res.redirect('/'); 
-    }
-  });
-});
+// app.post('/logout', isLoggedIn, (req,res)=>{
+//   req.session.destroy(function (err) {
+//     if(err){
+//       console.log(err)
+//     }else{
+//       res.redirect('/'); 
+//     }
+//   });
+// });
 
 // START SERVER
 
