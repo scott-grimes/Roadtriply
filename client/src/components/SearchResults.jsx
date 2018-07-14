@@ -1,5 +1,5 @@
 import React from 'react';
-
+const moment = require('moment')
 const SearchResults = ({results}) => {
   console.log(results)
   if(!results){
@@ -10,12 +10,40 @@ const SearchResults = ({results}) => {
   }
     return (
       <div>
+      <table>
+      <thead><tr>
+           <th>Date</th>
+           <th>Departs</th>
+           <th>From</th>
+           <th>To</th>
+           <th></th></tr>
+           </thead>
+           <tbody>
         {
-          results.map(result=>{
-           return  <div>hi</div>
+          results.map((result,idx)=>{
+            let time = moment.utc(result.depttime)
+            console.log(time)
+            // let date = utcstring.slice(0, -13)
+            // let time = +utcstring.slice(16,19)
+            // if(time<12){
+            //   time = time+' AM'
+            // }else if(time===12){
+            //   time = '12 NOON'
+            // }else{
+            //   time = time-12+' PM'
+            // }
+           return  <tr key ={idx}>
+           <td>{time.format('ddd, MMM Do YYYY')}</td>
+           <td>{time.format('LT')}</td>
+           <td>{result.fromloc}</td>
+           <td>{result.toloc}</td>
+           <td>{result.freeslots}</td>
+           <td>Request Ride</td>
+           </tr>
           })
         }
-      
+        </tbody>
+      </table>
       </div>
     );
  

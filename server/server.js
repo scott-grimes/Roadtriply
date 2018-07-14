@@ -217,14 +217,13 @@ app.post('/addpassenger',(req,res)=>{
 
 app.post('/ride', isLoggedIn, (req,res)=>{
   
-  console.log(req.body);
   const {driverid, ridercount, fromloc, toloc, depttime} = req.body;
   if(!ridercount|| !fromloc|| !toloc|| !depttime || !driverid){
 
     res.status(400).send('Not enough info given to add ride')
 
   }else{
-
+    
     db.addRide(driverid, ridercount, fromloc, toloc, depttime)
     .then((result)=>{
       if(!result){

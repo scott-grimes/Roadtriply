@@ -3,6 +3,7 @@ import React from 'react';
 import {cities} from '../../../lib/citylist';
 import api from '../api';
 import SearchResults from './SearchResults.jsx';
+const moment = require('moment')
 cities.sort();
 console.log(api)
 const HOUR = 1000*60*60;
@@ -40,8 +41,8 @@ class SearchBar extends React.Component{
     e.preventDefault();
     const fromloc = document.getElementById('fromdest').value
     const toloc = document.getElementById('todest').value
-    const depttimeBEGIN = document.getElementById('depttimeBEGIN').value
-    const depttime = new Date(depttimeBEGIN);
+    let depttimeBEGIN = document.getElementById('depttimeBEGIN').value
+    let depttime = moment.utc(depttimeBEGIN);
     if(fromloc==='Select' || toloc==='Select'){
       document.getElementById('message').innerHTML='Please select destinations and a date!'
       setTimeout(()=>{document.getElementById('message').innerHTML=''},2000);
@@ -49,6 +50,8 @@ class SearchBar extends React.Component{
     }
     
     console.log(fromdest,todest,depttime)
+    depttime = depttime.toDate();
+    console.log('seraching for on client', new Date(depttime).toUTCString())
     api.searchRides(fromloc,toloc,depttime)
     .then(response=>this.setState({results:response}));
 

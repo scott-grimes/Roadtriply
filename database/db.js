@@ -1,4 +1,6 @@
 const {knex} = require('./knex');
+const moment = require('moment');
+
 const self = module.exports = {
 
   // Returns a user based on their fbid
@@ -53,12 +55,16 @@ const self = module.exports = {
   // returns all rides meeting the given criteria
   // returns the count of free slots in each ride
   searchRides : ( fromloc, toloc, depttimeStr )=>{
-    const starttime = new Date(depttimeStr);
-    starttime.setHours(0,0,0,0);
+    let starttime = moment.utc(depttimeStr);
+    
+    starttime = starttime.add(1,'minutes');
+    starttime = starttime.toDate();
 
-    var endtime = new Date(depttimeStr);
-    endtime.setHours(23,59,59,999);
-
+    var endtime = moment.utc(starttime)
+    endtime = endtime.add(1,'days')
+    endtime = endtime.toDate();
+    console.log('searching from', starttime.toUTCString())
+    console.log('searching to', endtime.toUTCString())
     return knex('rides')
     .whereBetween('depttime', [starttime, endtime])
     .andWhere({'fromloc': fromloc, 'toloc':toloc})
@@ -158,6 +164,7 @@ const self = module.exports = {
 
  addRide :(driverid, ridercount, fromloc, toloc, depttimeStr )=>{
   const depttime = new Date(depttimeStr);
+  console.log(depttime.toUTCString())
   return knex.insert({driverid, ridercount, fromloc, toloc, depttime}).into('rides')
   .then((res)=>true)
   .catch((err)=>{console.log(err); return false;});
