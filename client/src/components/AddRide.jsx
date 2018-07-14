@@ -11,6 +11,7 @@ const DAY = HOUR*24;
 class AddRide extends React.Component{
 
   constructor(props){
+    
     super(props)
     let nowUnix = Date.now();
     let now =  new Date(nowUnix).toISOString().split('T')[0];
@@ -55,14 +56,14 @@ class AddRide extends React.Component{
       return (
         <div>
           <form onSubmit={this.handleSubmit}>
-          From:<select required id="fromdest">
-          <option selected defaultValue disabled hidden>Select</option>
+          From:<select defaultValue="Select" required id="fromdest">
+          <option disabled hidden>Select</option>
           {
             cities.map((city,idx)=><option key={idx} value={city}>{city}</option>)
           }
           </select>
-          To:<select required id="todest">
-          <option selected defaultValue disabled hidden>Select</option>
+          To:<select defaultValue="Select" required id="todest">
+          <option  disabled hidden>Select</option>
           {
             cities.map((city,idx)=><option key={idx} value={city}>{city}</option>)
           }
@@ -72,8 +73,8 @@ class AddRide extends React.Component{
                onChange={this.handleChange}
                defaultValue={bdate}
                min={this.state.today} max={this.state.maxdate} />
-          Room For:<select required id="ridercount">
-          <option selected defaultValue disabled hidden>Riders</option>
+          Room For:<select defaultValue="Riders" required id="ridercount">
+          <option defaultValue disabled hidden>Riders</option>
           {
             [...Array(8).keys()].map((i)=><option key={i+1} value={i+1}>{i+1}</option>)
           }

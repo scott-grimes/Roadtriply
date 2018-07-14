@@ -5,6 +5,8 @@ class Register extends React.Component{
 
 constructor(props){
   super(props)
+  this.changeUser =  props.changeUser;
+  this.handleSubmit = this.handleSubmit.bind(this);
 }
 
 handleSubmit(e){
@@ -16,6 +18,7 @@ handleSubmit(e){
       alert('All fields are required!')
       return;
     }
+    const self = this;
   api.login(email,password)
   .then(res =>{
     console.log(res)
@@ -24,7 +27,8 @@ handleSubmit(e){
       setTimeout(()=>{document.getElementById('message').innerHTML=''},2000);
       return;
     }
-      this.setState({'user':res})
+    console.log(res)
+      self.changeUser(res)
     
       
     });

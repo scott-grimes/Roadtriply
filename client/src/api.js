@@ -4,6 +4,18 @@ const axios = require('axios');
 
 module.exports = {
 
+  ridelist:(id,fbid)=>{
+
+    return axios.post('/ridelist',{
+      id,
+      fbid
+      })
+      .then(()=>true)
+      .catch((err)=>{console.log(err); return false;});
+    
+
+  },
+
   logout: (fbid)=>{
     return axios.post('/logout',{
      fbid

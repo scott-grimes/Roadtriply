@@ -1,4 +1,5 @@
 import React from 'react';
+import api from '../api';
 
 class Navbar extends React.Component{
 
@@ -6,10 +7,16 @@ constructor(props){
   super(props)
   this.state = { user: props.user};
   this.renderPage = props.renderPage;
+
+}
+
+componentWillReceiveProps(nextProps) {
+  this.setState({ user: nextProps.user });  
 }
 
 render(){
-  if(!this.state.user===null){
+  
+  if(this.state.user===null){
     return (
       <div className="navbar"><h1>roadtriply</h1>
         <div id='search' onClick={this.renderPage}>Search</div>
@@ -18,12 +25,14 @@ render(){
       </div>
     );
   }else{
+    console.log(this.state.user.username)
     return (
       <div className="navbar"><h1>roadtriply</h1>
       <div id='search' onClick={this.renderPage}>Search</div>
       <div id='account' onClick={this.renderPage}>Account</div>
       <div id='addride' onClick={this.renderPage}>Create Ride</div>
-      <div id='logout' onClick={this.renderpage}>Logout</div>
+      <div>{this.state.user.username}</div>
+      <div id='logout' onClick={this.renderPage}>Logout</div>
       
       </div>
       );

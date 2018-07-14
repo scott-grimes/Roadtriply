@@ -4,7 +4,7 @@
   "description": "Free ride-sharing app for road trips",
   "main": "index.js",
   "scripts": {
-    "test": "node ./test/testsuite.js",
+    "test": "mocha",
     "react-dev": "webpack -d --watch",
     "server": "nodemon ./server/server.js",
     "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run react-dev\"",
@@ -41,6 +41,7 @@
     "concurrently": "^3.6.0",
     "css-loader": "^1.0.0",
     "dotenv": "^6.0.0",
+    "mocha": "^5.2.0",
     "webpack": "^2.2.1"
   }
 }

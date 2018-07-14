@@ -231,6 +231,23 @@ app.post('/ride', isLoggedIn, (req,res)=>{
 
 });
 
+app.post('/ridelist',(req,res)=>{
+  if(!req.body || !req.body.id){
+    res.status(400).send('Invalid Request')
+    return;
+  }
+
+  // NEED AUTH IN HERE
+  
+  db.getRidesByDriverId(req.body.id)
+  .then(response=>{
+    
+    res.send(response)
+  })
+  .catch(err=>{console.log(err); res.status(400).send(err)})
+
+
+})
 
 
 app.get('/account', (req,res)=>{
@@ -244,7 +261,7 @@ app.get('/logout', isLoggedIn, (req,res)=>{
   //     res.redirect('/'); 
   //   }
   // });
-  res.redirect('/')
+  res.send();
 });
 
 // START SERVER

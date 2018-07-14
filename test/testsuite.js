@@ -1,18 +1,18 @@
+const assert = require('assert');
 const db = require('../database/db')
+const knex = require('../database/knex');
 
 // SERVER TESTS
 describe('Server Functions', () => {
-  const UserA = {}
-  const UserB = {}
-  const AsRide = {}
-  
+  const UserA = {username: "Leonardo Lagarde", fbid: "75569817661", id: 1000, email: "LeonardoLagarde@gmail.com", phone: "5111722389"};
+  const UserB = {username: "Karrie Konrad", fbid: "35706594253", id: 1001, email: "KarrieKonrad@gmail.com", phone: "5488682297"};
+  const AsRide = {"driverid":1000,"id":1000,"fromloc":"Chicopee, Massachusetts","toloc":"Anderson, Indiana","depttime":new Date('2019-01-05T19:00:00.000Z'),"ridercount":2}
 
   beforeEach(function () {
     console.log('this is run before each DESCRIBE. erase whole database')
   });
 
   describe('Users', () => {
-
     it('should add a new user to the database');
     it("should fetch a user by id from the database");
     it("should fail to fetch a user that does not exist");

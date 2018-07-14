@@ -2,9 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Navbar from './components/Navbar.jsx';
 import SearchBar from './components/SearchBar.jsx';
+import Account from './components/Account.jsx'
 import AddRide from './components/AddRide.jsx';
 import Register from './components/Register.jsx';
 import Login from './components/Login.jsx';
+import api from './api';
 
 class App extends React.Component {
   constructor(props) {
@@ -24,7 +26,6 @@ class App extends React.Component {
 
   renderPage(e){
     e.preventDefault();
-    console.log(e);
     if(e.target.id==='logout'){
       api.logout(this.state.user.fbid)
       .then(()=>{;
@@ -38,13 +39,13 @@ class App extends React.Component {
   render () {
     const p = this.state.page;
     const user = this.state.user;
-    console.log('user in page render',user)
-    let page = <SearchBar />;
+
+    let page = <SearchBar changeUser={this.changeUser}/>;
     if(p==='account'){
       page = <Account />;
     }
     if(p==='login'){
-      page = <Login />;
+      page = <Login changeUser={this.changeUser}/>;
     }
     if(p==='register'){
       page = <Register changeUser={this.changeUser}/>;
