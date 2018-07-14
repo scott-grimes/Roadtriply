@@ -68,10 +68,17 @@ module.exports = {
     .then((res)=>res.data)
   },
 
-  getDriversRides: (id)=>{
-    return axios.post('/ridelist',{
+  getDrivingRides: (id)=>{
+    return axios.post('/ridesbydriver',{
      id
     })
     .then((res)=>res.data)
+  },
+
+  getRidingRides: (id)=>{
+    return axios.post('/ridesbyuser',{
+      id
+     })
+     .then((res)=>{console.log('response from server',res.data); return res.data})
   }
 }

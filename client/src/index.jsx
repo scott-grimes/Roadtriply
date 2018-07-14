@@ -13,15 +13,28 @@ class App extends React.Component {
     super(props);
     this.state = { 
       user: null,
-      page: 'search'
+      page: 'search',
+      drivingRides: [],
+      ridingRides:[]
     }
     this.renderPage = this.renderPage.bind(this)
     this.changeUser = (x)=>{
-      this.setState({user:x}, 
+      this.setState({user:x}, ()=>{
       this.renderPage(
         {preventDefault:()=>{}, target:{id:'search'}}
-      ))};
+      )})};
     this.changeUser = this.changeUser.bind(this);
+    this.updateUserRides = this.updateUserRides.bind(this);
+  }
+
+  // refreshes a users rides (both as driver and passenger)
+  updateUserRides(){
+    if(this.state.user!==null){
+      api.getDrivingRides(this.state.user.id)
+      .then(res=>this.setState({drivingRides: res}));
+      api.getRidingRides(this.state.user.id)
+      .then(res=>this.setState({ridingRides: res}))
+    }
   }
 
   renderPage(e){
@@ -32,17 +45,19 @@ class App extends React.Component {
       this.setState({user:null})
       });
     }else{
+      this.updateUserRides();
       this.setState({page:e.target.id})
     }
+
+
   }
 
   render () {
     const p = this.state.page;
     const user = this.state.user;
-
     let page = <SearchBar user={user} changeUser={this.changeUser}/>;
     if(p==='account'){
-      page = <Account user={user}/>;
+      page = <Account drivingRides = {this.state.drivingRides} ridingRides = {this.state.ridingRides} user={user}/>;
     }
     if(p==='login'){
       page = <Login changeUser={this.changeUser}/>;

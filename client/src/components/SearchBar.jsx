@@ -54,9 +54,7 @@ class SearchBar extends React.Component{
       return;
     }
     
-    console.log(fromdest,todest,depttime)
     depttime = depttime.toDate();
-    console.log('seraching for on client', new Date(depttime).toUTCString())
     api.searchRides(fromloc,toloc,depttime)
     .then(response=>this.setState({results:response}));
 
@@ -64,7 +62,6 @@ class SearchBar extends React.Component{
   render(){
 
     const bdate = this.state.depttimeBEGIN
-console.log(this.state.results)
     if(!this.state.use2dates){
       return (
         <div>

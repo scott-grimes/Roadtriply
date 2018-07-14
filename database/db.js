@@ -149,6 +149,8 @@ const self = module.exports = {
         throw('No Space or Ride does not exist')
       }
     }))
+    .then(()=>knex.find('mainifests').where({passengerid,rideid}).select())
+    .then((alreadyAsked)=>{console.log(alreadyAsked)})
     .then(()=>knex.insert({passengerid,rideid, statuscode:0}).into('manifests'))
     .then(()=>true)
     .catch(()=>false)
@@ -178,6 +180,31 @@ const self = module.exports = {
     .then(()=>200)
     .catch(()=>400)
   },
+
+  // get rides a user has requested
+// Returns a list of all the passengers a given ride has (conf/unconfirmed)
+getRidesByPassengerId : (passengerid)=>{
+  return knex('manifests')
+    .where('passengerid', passengerid)
+    .select()
+    .then(manifests=>{
+        // adds info from the ride to our manifest
+
+        let p = Promise.resolve()
+
+        manifests.forEach((manifest,index)=>{
+          p = p.then(()=>self.getRideById(manifest.rideid)
+          .then(ride=>{
+            let {fromloc, toloc, depttime} = ride;
+            manifests[index].ride = {fromloc,toloc,depttime};
+            }));
+            
+     
+    });
+    return p.then(()=>manifests);
+  })
+  .catch(()=>null)
+},
 
 
 // Add ride

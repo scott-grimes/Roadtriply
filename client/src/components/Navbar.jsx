@@ -27,7 +27,6 @@ render(){
       </div>
     );
   }else{
-    console.log(this.state.user.username)
     return (
       <div style={style} className="navbar"><h1>roadtriply</h1>
       <div style={style} id='search' onClick={this.renderPage}>Search</div>

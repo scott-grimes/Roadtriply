@@ -241,7 +241,8 @@ app.post('/ride', isLoggedIn, (req,res)=>{
 
 });
 
-app.post('/ridelist',(req,res)=>{
+// get all of a users rides, where the user is the driver
+app.post('/ridesbydriver',(req,res)=>{
   if(!req.body || !req.body.id){
     res.status(400).send('Invalid Request')
     return;
@@ -257,7 +258,28 @@ app.post('/ridelist',(req,res)=>{
   .catch(err=>{console.log(err); res.status(400).send(err)})
 
 
-})
+});
+
+// get all of the users rides, where the user is a rider
+app.post('/ridesbyuser',(req,res)=>{
+  if(!req.body || !req.body.id){
+    res.status(400).send('Invalid Request')
+    return;
+  }
+
+  // NEED AUTH IN HERE
+  
+  db.getRidesByPassengerId(req.body.id)
+  .then(response=>{
+    console.log(response)
+    res.send(response)
+  })
+  .catch(err=>{console.log(err); res.status(400).send(err)})
+
+
+});
+
+
 
 
 app.get('/account', (req,res)=>{
