@@ -1,6 +1,11 @@
-const host =  process.env.DBHOST || 'localhost';
+let host =  process.env.DBHOST || 'localhost';
 const user = process.env.DBUSERNAME || 'student';    
 const password = process.env.DBPASSWORD || 'student';
+let db = process.env.DBNAME || 'db';
+
+if(process.env.NODE_ENV && process.env.NODE_ENV === 'test'){
+  db = 'testdb';
+}
 
 const knex = require('knex')({
   client: 'mysql2',
@@ -8,7 +13,7 @@ const knex = require('knex')({
     host: host,
     user : user,  
     password : password,
-    database : 'db'
+    database : db
   }
 });
 
