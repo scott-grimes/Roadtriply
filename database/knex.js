@@ -17,7 +17,7 @@ knex = require('knex')({
     }
   });
 
-if(process.env.DATABASERESET && process.env.DATABASERESET===true){
+if(process.env.DATABASERESET){
   console.log('resetting database')
   
   knex.schema.raw(`-- ---
