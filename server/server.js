@@ -38,7 +38,7 @@ app.get('/rides', (req,res)=>{
   let rides;
  
   const {fromloc, toloc, depttime} = req.query;
-  console.log(fromloc, toloc, depttime)
+
   if(!fromloc || !toloc || !depttime){
     res.status(400).send('Quer(ies) missing!')
     return;
@@ -98,7 +98,7 @@ app.get('/user', (req,res)=>{
 
 app.post('/login', (req,res)=>{
     const {email, fbid} = req.body;
-    console.log(req.body)
+
     if(!email || !fbid){
       res.status(400).send();
       return;
@@ -154,7 +154,6 @@ app.post('/user',(req,res)=>{
   if(!req.body || !username || !fbid || !email || !phone){
     res.status(400).send('Must have credentials to signup')
   }else{
-    console.log(username,fbid,email,phone)
     db.addUser(username,fbid,email,phone)
     .then(user=>{
       if(!user){
@@ -223,7 +222,7 @@ app.post('/ride', isLoggedIn, (req,res)=>{
     res.status(400).send('Not enough info given to add ride')
 
   }else{
-    
+
     db.addRide(driverid, ridercount, fromloc, toloc, depttime)
     .then((result)=>{
       if(!result){
@@ -244,11 +243,11 @@ app.post('/ridelist',(req,res)=>{
     return;
   }
 
+
   // NEED AUTH IN HERE
   
   db.getRidesByDriverId(req.body.id)
   .then(response=>{
-    
     res.send(response)
   })
   .catch(err=>{console.log(err); res.status(400).send(err)})
@@ -260,7 +259,18 @@ app.post('/ridelist',(req,res)=>{
 app.get('/account', (req,res)=>{
   
 });
-app.get('/logout', isLoggedIn, (req,res)=>{
+app.get('/logout', (req,res)=>{
+  // req.session.destroy(function (err) {
+  //   if(err){
+  //     console.log(err)
+  //   }else{
+  //     res.redirect('/'); 
+  //   }
+  // });
+  res.send();
+});
+
+app.post('/logout', (req,res)=>{
   // req.session.destroy(function (err) {
   //   if(err){
   //     console.log(err)

@@ -37,11 +37,12 @@ handleSubmit(e){
 render(){
   return(<div>
     <form onSubmit={this.handleSubmit}>
-      Email <input type="text" id="email"></input>
-      Password <input type="password" id="password"></input>
+    <div id="message" style={{'height':'20px'}}></div>
+      <div>Email<input type="text" id="email"></input></div>
+      <div>Password <input type="password" id="password"></input></div>
       <input type="submit"></input>
     </form>
-    <div id="message"></div>
+
   </div>)
 }
   

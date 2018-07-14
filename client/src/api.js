@@ -33,7 +33,7 @@ module.exports = {
   },
 
   addUser: (username, fbid, email, phone)=>{
-    console.log(username, fbid, email, phone)
+
     return axios.post('/user',{
       username, fbid, email, phone
     })
@@ -63,8 +63,15 @@ module.exports = {
 
   addPassenger: (passengerid, rideid)=>{
     return axios.post('/addpassenger',{
-      body: {passengerid, rideid}
+      passengerid, rideid
     })
-    .then((res)=>console.log(res))
+    .then((res)=>res.data)
   },
+
+  getDriversRides: (id)=>{
+    return axios.post('/ridelist',{
+     id
+    })
+    .then((res)=>res.data)
+  }
 }

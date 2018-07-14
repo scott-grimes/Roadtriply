@@ -24,16 +24,21 @@ class SearchBar extends React.Component{
       depttimeBEGIN:now,
       depttimeEND:now,
       maxdate,
-      results : null
+      results : null,
+      user: props.user
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  componentWillReceiveProps(newProps){
+    this.setState({user:newProps.user})
+  }
+
 
   handleChange(e){
     e.preventDefault();
-    console.log(e.target)
+
   }
 
   handleSubmit(e){
@@ -59,7 +64,7 @@ class SearchBar extends React.Component{
   render(){
 
     const bdate = this.state.depttimeBEGIN
-
+console.log(this.state.results)
     if(!this.state.use2dates){
       return (
         <div>
@@ -84,8 +89,8 @@ class SearchBar extends React.Component{
                min={this.state.today} max={this.state.maxdate} />
           <input type="submit" value="submit"></input>
           </form>
-          <div id="message"></div>
-          <SearchResults results = {this.state.results}/>
+          <div id="message" style={{'height':'30px'}}></div>
+          <SearchResults user = {this.state.user} results = {this.state.results}/>
         </div>)
         }
     

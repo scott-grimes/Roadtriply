@@ -24,16 +24,13 @@ class AddRide extends React.Component{
       depttimeEND:now,
       maxdate
     }
-    console.log(props,'props in addride')
     this.user = props.user;
-    console.log(this.user)
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   handleChange(e){
     e.preventDefault();
-    console.log(e.target)
   }
 
   handleSubmit(e){

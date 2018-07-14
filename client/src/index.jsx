@@ -40,9 +40,9 @@ class App extends React.Component {
     const p = this.state.page;
     const user = this.state.user;
 
-    let page = <SearchBar changeUser={this.changeUser}/>;
+    let page = <SearchBar user={user} changeUser={this.changeUser}/>;
     if(p==='account'){
-      page = <Account />;
+      page = <Account user={user}/>;
     }
     if(p==='login'){
       page = <Login changeUser={this.changeUser}/>;

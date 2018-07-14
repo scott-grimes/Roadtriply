@@ -38,14 +38,15 @@ handleSubmit(e){
 }
 render(){
   return(<div>
+    <div id="message" style={{'height':'20px'}}></div>
     <form onSubmit={this.handleSubmit}>
-      Username <input type="text" id="username"></input>
-      Password <input type="password" id="password"></input>
-      Email <input type="text" id="email"></input>
-      Phone <input type="text" id="phone"></input>
-      <input type="submit"></input>
+    <div>Username <input type="text" id="username"></input></div>
+    <div>Password <input type="password" id="password"></input></div>
+    <div>Email <input type="text" id="email"></input></div>
+      <div>Phone <input type="text" id="phone"></input></div>
+      <div><input type="submit"></input></div>
     </form>
-    <div id="message"></div>
+
   </div>)
 }
   

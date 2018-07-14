@@ -30,19 +30,40 @@ const self = module.exports = {
     .catch((err)=>null)
   },
 
-  // Returns a list of all rides a driver is scheduled for
+  // Returns a list of all rides a driver is scheduled for, along with all of the passengers in the db for each
+
   getRidesByDriverId: (driverid)=>{
     let user;
     return self.getUserById(driverid)
     .then(res=>{
       if(!res){
-        throw('User already exists');
+        throw('User does not exist');
       }
       user = res;
+      console.log('found user in db', user)
     })
     .then(()=>knex('rides')
-    .where('driverid', user.fbid)
-    .select());
+    .where('driverid', user.id)
+    .select())
+    .then(list=>{
+      
+      let p = Promise.resolve();
+
+      list.forEach((ride,index)=>{
+        
+        p = p.then(()=>{
+          return self.getAllPassengers(ride.id)
+          .then((passengers)=>{
+            list[index]['passengers'] = passengers;
+          })
+        })
+
+        
+      })
+      
+     return p.then(()=>list);
+      
+    });
   },
 
   // Returns the ride by given ID
@@ -63,8 +84,7 @@ const self = module.exports = {
     var endtime = moment.utc(starttime)
     endtime = endtime.add(1,'days')
     endtime = endtime.toDate();
-    console.log('searching from', starttime.toUTCString())
-    console.log('searching to', endtime.toUTCString())
+    
     return knex('rides')
     .whereBetween('depttime', [starttime, endtime])
     .andWhere({'fromloc': fromloc, 'toloc':toloc})
@@ -164,7 +184,6 @@ const self = module.exports = {
 
  addRide :(driverid, ridercount, fromloc, toloc, depttimeStr )=>{
   const depttime = new Date(depttimeStr);
-  console.log(depttime.toUTCString())
   return knex.insert({driverid, ridercount, fromloc, toloc, depttime}).into('rides')
   .then((res)=>true)
   .catch((err)=>{console.log(err); return false;});
