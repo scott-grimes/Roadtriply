@@ -62,14 +62,14 @@ class SearchBar extends React.Component{
         <div>
           
           <form onSubmit={this.handleSubmit}>
-          From:<select required id="fromdest">
-          <option selected defaultValue disabled hidden>Select</option>
+          From:<select defaultValue="Select" required id="fromdest">
+          <option  disabled hidden>Select</option>
           {
             cities.map((city,idx)=><option key={idx} value={city}>{city}</option>)
           }
           </select>
-          To:<select required id="todest">
-          <option selected defaultValue disabled hidden>Select</option>
+          To:<select defaultValue="Select" required id="todest">
+          <option  disabled hidden>Select</option>
           {
             cities.map((city,idx)=><option key={idx} value={city}>{city}</option>)
           }
