@@ -34,6 +34,7 @@ app.get('/test',(req,res)=>{
 // UNAUTHENTICATED
 
 // Search for all rides meeting the given specifications
+// returns the rides, plus a list of all the passenger ids associated with the rides
 app.get('/rides', (req,res)=>{
   let rides;
  
@@ -176,9 +177,10 @@ app.post('/addpassenger',(req,res)=>{
     res.status(400).send('Invalid credentials or ride id')
 
   }else{
-
+    console.log('adding ',passengerid,rideid)
     db.addPassenger(passengerid, rideid)
     .then(added=>{
+      console.log(added)
       if(!added){
         res.status(200).send(false);
         return;

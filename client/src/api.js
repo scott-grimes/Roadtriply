@@ -79,6 +79,6 @@ module.exports = {
     return axios.post('/ridesbyuser',{
       id
      })
-     .then((res)=>{console.log('response from server',res.data); return res.data})
+     .then((res)=>res.data)
   }
 }

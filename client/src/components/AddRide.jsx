@@ -27,6 +27,7 @@ class AddRide extends React.Component{
     this.user = props.user;
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.renderPage = props.renderPage;
   }
 
   handleChange(e){
@@ -36,6 +37,7 @@ class AddRide extends React.Component{
   handleSubmit(e){
     
     e.preventDefault();
+    const self = this;
     const fromloc = document.getElementById('fromdest').value
     const toloc = document.getElementById('todest').value
     const depttimeBEGIN = document.getElementById('depttimeBEGIN').value
@@ -59,6 +61,7 @@ class AddRide extends React.Component{
       }
       document.getElementById('message').innerHTML='Added Ride Successfully!'
       setTimeout(()=>{document.getElementById('message').innerHTML=''},2000);
+      self.renderPage('search')
       return;
     })
 

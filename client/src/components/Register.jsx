@@ -26,7 +26,7 @@ handleSubmit(e){
   const self = this;
   api.addUser(username,password,email,phone)
   .then(res => {
-    console.log(res)
+
     if(!res){
       document.getElementById('message').innerHTML='Invalid Credentials\nTry Again!'
       setTimeout(()=>{document.getElementById('message').innerHTML=''},2000);

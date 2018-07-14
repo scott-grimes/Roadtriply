@@ -20,9 +20,8 @@ class App extends React.Component {
     this.renderPage = this.renderPage.bind(this)
     this.changeUser = (x)=>{
       this.setState({user:x}, ()=>{
-      this.renderPage(
-        {preventDefault:()=>{}, target:{id:'search'}}
-      )})};
+      this.renderPage('search');
+      })};
     this.changeUser = this.changeUser.bind(this);
     this.updateUserRides = this.updateUserRides.bind(this);
   }
@@ -38,15 +37,17 @@ class App extends React.Component {
   }
 
   renderPage(e){
-    e.preventDefault();
-    if(e.target.id==='logout'){
+    e.preventDefault && e.preventDefault();
+    const dest = e.target? e.target.id : 'search';
+    
+    if(dest==='logout'){
       api.logout(this.state.user.fbid)
       .then(()=>{;
-      this.setState({user:null})
+      this.setState({user:null},()=>this.renderPage('search'))
       });
     }else{
       this.updateUserRides();
-      this.setState({page:e.target.id})
+      this.setState({page:dest})
     }
 
 

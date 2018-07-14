@@ -24,7 +24,6 @@ componentWillReceiveProps(newProps){
 
 render(){
 
-  console.log(this.state)
   return(<div>
    Account Page
    <div style={{'height':'50px'}}><h3>Upcoming Drives</h3></div>

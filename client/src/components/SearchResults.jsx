@@ -1,11 +1,15 @@
 import React from 'react';
 const moment = require('moment')
 const api = require('../api')
+const userIsDriverOfRide = (ride,user)=> user===null?false:user.id===ride.driverid;
+const userHasAlreadyRequestedRide = (ride,user)=> user===null?false:ride.passengers.map(x=>x.passengerid).includes(user.id);
 class SearchResults extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      user:props.user, results:props.results
+      user:props.user, results:props.results,
+      drivingRides:props.drivingRides,
+      ridingRides:props.ridingRides
     };
 
     this.reqestRideHandler = this.requestrideHandler.bind(this);
@@ -14,7 +18,9 @@ class SearchResults extends React.Component {
 
   requestrideHandler(rideid){
 
-    console.log(this.state.user.id, rideid)
+    if(document.getElementById(rideid).innerHTML='Ride Requested!'){
+      return;
+    }
     api.addPassenger(this.state.user.id, rideid)
     .then(res=>
     {
@@ -31,29 +37,33 @@ class SearchResults extends React.Component {
 
 
   componentWillReceiveProps(newProps){
-    this.setState({user:newProps.user, results:newProps.results})
+    this.setState({user:newProps.user, results:newProps.results,
+      drivingRides:newProps.drivingRides,
+      ridingRides:newProps.ridingRides})
   }
 
-  linkBuilder (rideid){
+  linkBuilder (ride){
 
     if(this.state.user===null){
       return <div></div>;
     }
 
-    return (<div><a id={rideid} onClick={()=>this.requestrideHandler(rideid)}>Request Ride</a></div>);
+    return (<div><a id={ride.id} onClick={()=>this.requestrideHandler(ride.id)}>Request Ride</a></div>);
   }
   
   
   
   
   render(){ 
-    if(!this.state.results){
+    let results = this.state.results!==null ? this.state.results.filter((result)=>!userIsDriverOfRide(result,this.state.user)&&!userHasAlreadyRequestedRide(result,this.state.user)):null;
+    if(!results){
       return(<div></div>)
     }
-    else if (!this.state.results.length){
+    else if (!results.length){
       return(<div>No Results Found For Your Query</div>)
     }
 
+    
     const style = {
       'tableLayout': 'fixed',
       'width': '500px'
@@ -75,7 +85,10 @@ class SearchResults extends React.Component {
             </thead>
             <tbody>
           {
-            this.state.results.map((result)=>{
+            
+            results.map((result)=>{
+              console.log(result)
+              
               let time = moment.utc(result.depttime)
             return  <tr key ={result.id}>
             <td>{time.format('ddd, MMM Do YYYY')}</td>
@@ -83,7 +96,7 @@ class SearchResults extends React.Component {
             <td>{result.fromloc}</td>
             <td>{result.toloc}</td>
             <td>{result.freeslots}</td>
-            <td>{this.linkBuilder(result.id)}</td>
+            <td>{this.linkBuilder(result)}</td>
             </tr>
             })
           }

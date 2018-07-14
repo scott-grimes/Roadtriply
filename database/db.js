@@ -40,7 +40,6 @@ const self = module.exports = {
         throw('User does not exist');
       }
       user = res;
-      console.log('found user in db', user)
     })
     .then(()=>knex('rides')
     .where('driverid', user.id)
@@ -95,9 +94,12 @@ const self = module.exports = {
 
         ridelist.forEach((ride,ind)=>{
           
-          p = p.then( ()=>self.getNumFreeSlots(ride.id)
-          .then(freeslots=>{
-            ridelist[ind]['freeslots'] = freeslots;
+          p = p.then( ()=>knex('manifests').where({'rideid': ride.id})
+          .select()
+          .then(manifest=>{
+              let confirmedPassengers = manifest.reduce((sum,ride)=>ride.statuscode+sum,0);
+              ridelist[ind].freeslots = ridelist[ind].ridercount - confirmedPassengers;
+              ridelist[ind].passengers = manifest.map(e=>{return {passengerid:e.passengerid, statuscode:e.statuscode}});
           }));
         });
         return p.then(()=>ridelist);
@@ -149,11 +151,11 @@ const self = module.exports = {
         throw('No Space or Ride does not exist')
       }
     }))
-    .then(()=>knex.find('mainifests').where({passengerid,rideid}).select())
-    .then((alreadyAsked)=>{console.log(alreadyAsked)})
+    .then(()=>knex('manifests').where({passengerid,rideid}).select())
+    .then((alreadyAsked)=>{if(alreadyAsked.length>0){throw('User Already Requested A Ride')}})
     .then(()=>knex.insert({passengerid,rideid, statuscode:0}).into('manifests'))
     .then(()=>true)
-    .catch(()=>false)
+    .catch((err)=>{console.log(err); return false})
   },
 
  // add the passenger to the ride specified, if there is enough space

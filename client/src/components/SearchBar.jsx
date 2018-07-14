@@ -65,7 +65,6 @@ class SearchBar extends React.Component{
     if(!this.state.use2dates){
       return (
         <div>
-          
           <form onSubmit={this.handleSubmit}>
           From:<select defaultValue="Select" required id="fromdest">
           <option disabled hidden>Select</option>

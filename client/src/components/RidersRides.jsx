@@ -57,13 +57,11 @@ class RidersRides extends React.Component {
       'tableLayout': 'fixed',
       'width': '500px'
     }
-    console.log('ridingrides', this.state.ridingRides)
     
     if(this.state.ridingRides.length===0){
       return(<div>No Rides scheduled. Let's change that!</div>)
     }
 
-    console.log('ridingrides', this.state.ridingRides)
       return (
         <div>
         <table style={style}>
