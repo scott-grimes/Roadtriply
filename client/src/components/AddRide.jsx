@@ -23,8 +23,11 @@ class AddRide extends React.Component{
       depttimeEND:now,
       maxdate
     }
-
+    console.log(props,'props in addride')
+    this.user = props.user;
+    console.log(this.user)
     this.handleChange = this.handleChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   handleChange(e){
@@ -39,14 +42,25 @@ class AddRide extends React.Component{
     const toloc = document.getElementById('todest').value
     const depttimeBEGIN = document.getElementById('depttimeBEGIN').value
     const depttime = new Date(depttimeBEGIN);
-    if(fromloc==='Select' || toloc==='Select'){
+    const ridercount = document.getElementById('ridercount').value;
+    if(fromloc==='Select' || toloc==='Select' || ridercount==='Riders'){
       document.getElementById('message').innerHTML='Your form is not complete!'
       setTimeout(()=>{document.getElementById('message').innerHTML=''},2000);
       return;
     }
 
-    console.log(fromdest,todest,depttime)
-    api.addRide(fromloc,toloc,depttime);
+    console.log(this.user.id, ridercount, fromloc, toloc, depttime)
+    api.addRide(this.user.id, ridercount, fromloc, toloc, depttime)
+    .then(result=>{
+      if(!result){
+        document.getElementById('message').innerHTML='Error adding ride, please try again'
+        setTimeout(()=>{document.getElementById('message').innerHTML=''},2000);
+        return;
+      }
+      document.getElementById('message').innerHTML='Added Ride Successfully!'
+      setTimeout(()=>{document.getElementById('message').innerHTML=''},2000);
+      return;
+    })
 
   }
   render(){

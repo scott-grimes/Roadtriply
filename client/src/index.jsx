@@ -51,7 +51,7 @@ class App extends React.Component {
       page = <Register changeUser={this.changeUser}/>;
     }
     if(p==='addride'){
-      page = <AddRide />;
+      page = <AddRide renderPage = {this.renderPage} user = {this.state.user}/>;
     }
     return (<div><div></div>
       <Navbar renderPage = {this.renderPage} user = {user}/>

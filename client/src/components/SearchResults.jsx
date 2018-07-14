@@ -1,6 +1,7 @@
 import React from 'react';
 
 const SearchResults = ({results}) => {
+  console.log(results)
   if(!results){
     return(<div></div>)
   }
@@ -11,7 +12,7 @@ const SearchResults = ({results}) => {
       <div>
         {
           results.map(result=>{
-           return  <div>{result}</div>
+           return  <div>hi</div>
           })
         }
       

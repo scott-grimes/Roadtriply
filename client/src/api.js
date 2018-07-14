@@ -43,7 +43,7 @@ module.exports = {
   addRide: (driverid, ridercount, fromloc, toloc, depttime )=>{
     
     return axios.post('/ride',{
-      body:{ driverid, ridercount, fromloc, toloc, depttime  }
+      driverid, ridercount, fromloc, toloc, depttime 
     })
     .then((res)=>res.data);
   },

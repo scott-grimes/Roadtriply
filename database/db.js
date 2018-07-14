@@ -51,7 +51,7 @@ const self = module.exports = {
   },
 
   // returns all rides meeting the given criteria
-  
+  // returns the count of free slots in each ride
   searchRides : ( fromloc, toloc, depttimeStr )=>{
     const starttime = new Date(depttimeStr);
     starttime.setHours(0,0,0,0);
@@ -63,6 +63,19 @@ const self = module.exports = {
     .whereBetween('depttime', [starttime, endtime])
     .andWhere({'fromloc': fromloc, 'toloc':toloc})
     .select()
+    .then(ridelist=>{
+
+        let p = Promise.resolve();
+
+        ridelist.forEach((ride,ind)=>{
+          
+          p = p.then( ()=>self.getNumFreeSlots(ride.id)
+          .then(freeslots=>{
+            ridelist[ind]['freeslots'] = freeslots;
+          }));
+        });
+        return p.then(()=>ridelist);
+    });
   },
 
   // Returns a list of all the passengers a given ride has (conf/unconfirmed)
@@ -143,23 +156,12 @@ const self = module.exports = {
 
 // Add ride
 
- addRide :(driverid, ridercount, fromloc, toloc, depttime )=>{
-  return;
-  return sequelize.Ride.create({
-    driverid: driverid,
-    ridercount: ridercount,
-    toloc: toloc,
-    fromloc: fromloc,
-    depttime: new Date(depttime)
-  }).then(()=>{
-    console.log('ride created')
-    return true;
-  }
-).catch((err)=>{
-  console.log(err)
-  console.log('Could not create new ride')
-  return false;
-})
+ addRide :(driverid, ridercount, fromloc, toloc, depttimeStr )=>{
+  const depttime = new Date(depttimeStr);
+  return knex.insert({driverid, ridercount, fromloc, toloc, depttime}).into('rides')
+  .then((res)=>true)
+  .catch((err)=>{console.log(err); return false;});
+  
 }
 
  };
