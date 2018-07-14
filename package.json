@@ -8,7 +8,7 @@
     "react-dev": "webpack -d --watch",
     "server": "nodemon ./server/server.js",
     "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run react-dev\"",
-    "start": "webpack && node /server/server.js",
+    "start": "webpack && node ./server/server.js",
     "resetdb": "mysql -u student -pstudent < database/reset.schema && node database/testdata.js"
   },
   "repository": {
