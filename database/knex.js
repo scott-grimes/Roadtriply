@@ -8,10 +8,7 @@ if(process.env.NODE_ENV && process.env.NODE_ENV === 'test'){
 }
  
 let knex;
-
-if(process.env.DATABASERESET && process.env.DATABASERESET===true){
-  console.log('resetting database')
-  knex = require('knex')({
+knex = require('knex')({
     client: 'mysql2',
     connection: {
       host: host,
@@ -20,6 +17,9 @@ if(process.env.DATABASERESET && process.env.DATABASERESET===true){
     }
   });
 
+if(process.env.DATABASERESET && process.env.DATABASERESET===true){
+  console.log('resetting database')
+  
   knex.schema.raw(`-- ---
   -- Globals
   -- ---
@@ -106,15 +106,8 @@ if(process.env.DATABASERESET && process.env.DATABASERESET===true){
 
 }
 
-knex = require('knex')({
-  client: 'mysql2',
-  connection: {
-    host: host,
-    user : user,  
-    password : password,
-    database : db
-  }
-});
+knex.schema.raw('USE db');
+console.log('database connected!')
 
 
 // .then(() => {
