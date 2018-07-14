@@ -24,8 +24,8 @@ const self = module.exports = {
       }}
     )
     .then(()=>knex.insert({username,fbid,email,phone}).into('users'))
-    .then(()=>200)
-    .catch(()=>409)
+    .then((userid)=>self.getUserById(userid))
+    .catch((err)=>null)
   },
 
   // Returns a list of all rides a driver is scheduled for

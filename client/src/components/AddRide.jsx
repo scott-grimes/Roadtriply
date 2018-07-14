@@ -3,12 +3,12 @@ import React from 'react';
 import {cities} from '../../../lib/citylist';
 import api from '../api';
 cities.sort();
-console.log(api)
+
 const HOUR = 1000*60*60;
 const DAY = HOUR*24;
 
 
-class SearchBar extends React.Component{
+class AddRide extends React.Component{
 
   constructor(props){
     super(props)
@@ -17,12 +17,12 @@ class SearchBar extends React.Component{
     let maxdate = new Date(nowUnix+365*DAY).toISOString().split('T')[0];
     
     this.state = {
-      use2dates:false,
       today: now,
       depttimeBEGIN:now,
       depttimeEND:now,
       maxdate
     }
+    
     this.handleChange = this.handleChange.bind(this)
   }
 
@@ -32,7 +32,7 @@ class SearchBar extends React.Component{
   }
 
   handleSubmit(e){
-
+    
     e.preventDefault();
     const fromloc = document.getElementById('fromdest').value
     const toloc = document.getElementById('todest').value
@@ -44,14 +44,13 @@ class SearchBar extends React.Component{
     }
 
     console.log(fromdest,todest,depttime)
-    api.searchRides(fromloc,toloc,depttime);
+    api.addRide(fromloc,toloc,depttime);
 
   }
   render(){
 
     const bdate = this.state.depttimeBEGIN
 
-    if(!this.state.use2dates){
       return (
         <div>
           <form onSubmit={this.handleSubmit}>
@@ -72,12 +71,19 @@ class SearchBar extends React.Component{
                onChange={this.handleChange}
                defaultValue={bdate}
                min={this.state.today} max={this.state.maxdate} />
+          Room For:<select required id="ridercount">
+          <option selected defaultValue disabled hidden>Riders</option>
+          {
+            [...Array(8).keys()].map((i)=><option key={i+1} value={i+1}>{i+1}</option>)
+          }
+          </select>
           <input type="submit" value="submit"></input>
           </form>
+          
       
         </div>)
         }
     
-      }
+      
 };
-export default SearchBar;
+export default AddRide;

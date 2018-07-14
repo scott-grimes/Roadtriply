@@ -1,22 +1,22 @@
 import React from 'react';
 
-const Navbar = ({userid}) => {
-  if(!userid){
+const SearchResults = ({results}) => {
+  if(!results){
+    return(<div></div>)
+  }
+  else if (!results.length){
+    return(<div>No Results Found For Your Query</div>)
+  }
     return (
-      <div><h1>roadtriply</h1>
-        <div>Search</div>
-        <div>Account</div>
-        <div>Logout</div>
+      <div>
+        {
+          results.map(result=>{
+           return  <div>{result}</div>
+          })
+        }
+      
       </div>
     );
-  }else{
-    return (
-      <div><h1>roadtriply</h1>
-      <div>Search</div>
-      <div>Account</div>
-      <div>Login/Register</div>
-      </div>
-      );
-  }
+ 
 };
-export default Navbar;
+export default SearchResults;

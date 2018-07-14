@@ -4,6 +4,7 @@
   "description": "Free ride-sharing app for road trips",
   "main": "index.js",
   "scripts": {
+    "test": "node ./test/testsuite.js",
     "react-dev": "webpack -d --watch",
     "server": "nodemon ./server/server.js",
     "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run react-dev\"",
@@ -33,12 +34,13 @@
     "react-dom": "^15.4.2"
   },
   "devDependencies": {
-    "concurrently": "^3.6.0",
-    "dotenv": "^6.0.0",
     "babel-core": "^6.23.1",
     "babel-loader": "^6.3.2",
     "babel-preset-es2015": "^6.22.0",
     "babel-preset-react": "^6.23.0",
+    "concurrently": "^3.6.0",
+    "css-loader": "^1.0.0",
+    "dotenv": "^6.0.0",
     "webpack": "^2.2.1"
   }
 }

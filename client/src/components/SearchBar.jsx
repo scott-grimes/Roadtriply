@@ -2,6 +2,7 @@ import React from 'react';
 // hacky way to select cities
 import {cities} from '../../../lib/citylist';
 import api from '../api';
+import SearchResults from './SearchResults.jsx';
 cities.sort();
 console.log(api)
 const HOUR = 1000*60*60;
@@ -21,10 +22,13 @@ class SearchBar extends React.Component{
       today: now,
       depttimeBEGIN:now,
       depttimeEND:now,
-      maxdate
+      maxdate,
+      results : null
     }
     this.handleChange = this.handleChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
+
 
   handleChange(e){
     e.preventDefault();
@@ -39,12 +43,14 @@ class SearchBar extends React.Component{
     const depttimeBEGIN = document.getElementById('depttimeBEGIN').value
     const depttime = new Date(depttimeBEGIN);
     if(fromloc==='Select' || toloc==='Select'){
-      alert('Please select something')
+      document.getElementById('message').innerHTML='Please select destinations and a date!'
+      setTimeout(()=>{document.getElementById('message').innerHTML=''},2000);
       return;
     }
-
+    
     console.log(fromdest,todest,depttime)
-    api.searchRides(fromloc,toloc,depttime);
+    api.searchRides(fromloc,toloc,depttime)
+    .then(response=>this.setState({results:response}));
 
   }
   render(){
@@ -54,6 +60,7 @@ class SearchBar extends React.Component{
     if(!this.state.use2dates){
       return (
         <div>
+          
           <form onSubmit={this.handleSubmit}>
           From:<select required id="fromdest">
           <option selected defaultValue disabled hidden>Select</option>
@@ -74,6 +81,8 @@ class SearchBar extends React.Component{
                min={this.state.today} max={this.state.maxdate} />
           <input type="submit" value="submit"></input>
           </form>
+          <div id="message"></div>
+          <SearchResults results = {this.state.results}/>
       
         </div>)
         }

@@ -3,7 +3,7 @@ const path = require('path')
 const express = require('express');
 const bodyParser = require('body-parser');
 const mysql2 = require('mysql2');
-require('../database/knex');
+const {knex} = require('../database/knex');
 const db = require('../database/db');
 //const passport = require('passport')
 //require('./database/passport')(passport);
@@ -96,7 +96,22 @@ app.get('/user', (req,res)=>{
 });
 
 
+app.post('/login', (req,res)=>{
+    const {email, fbid} = req.body;
+    console.log(req.body)
+    if(!email || !fbid){
+      res.status(400).send();
+      return;
+    }
+    knex('users')
+    .where({'fbid':fbid,'email':email})
+    .select('*')
+    .then(result=>{
+      res.send(result)
+    })
 
+
+});
 
 // app.post('/login', passport.authenticate('mySignup',{
 //   successRedirect : '/account', // redirect to the secure profile section
@@ -137,14 +152,16 @@ app.post('/user',(req,res)=>{
 
   const {username,fbid,email,phone} = req.body;
   if(!req.body || !username || !fbid || !email || !phone){
-
     res.status(400).send('Must have credentials to signup')
-
   }else{
-
+    console.log(username,fbid,email,phone)
     db.addUser(username,fbid,email,phone)
-    .then(rescode=>{
-      res.status(rescode).send()
+    .then(user=>{
+      if(!user){
+        res.status(400).send(null);
+        return;
+      }
+      res.status(201).send(user)
     })
 
   }
@@ -214,15 +231,21 @@ app.post('/ride', isLoggedIn, (req,res)=>{
 
 });
 
-// app.post('/logout', isLoggedIn, (req,res)=>{
-//   req.session.destroy(function (err) {
-//     if(err){
-//       console.log(err)
-//     }else{
-//       res.redirect('/'); 
-//     }
-//   });
-// });
+
+
+app.get('/account', (req,res)=>{
+  
+});
+app.get('/logout', isLoggedIn, (req,res)=>{
+  // req.session.destroy(function (err) {
+  //   if(err){
+  //     console.log(err)
+  //   }else{
+  //     res.redirect('/'); 
+  //   }
+  // });
+  res.redirect('/')
+});
 
 // START SERVER
 
