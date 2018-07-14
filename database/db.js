@@ -150,8 +150,8 @@ const self = module.exports = {
       }
     }))
     .then(()=>knex.insert({passengerid,rideid, statuscode:0}).into('manifests'))
-    .then(()=>200)
-    .catch(()=>400)
+    .then(()=>true)
+    .catch(()=>false)
   },
 
  // add the passenger to the ride specified, if there is enough space

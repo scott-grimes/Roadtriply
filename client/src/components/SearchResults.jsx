@@ -1,5 +1,6 @@
 import React from 'react';
 const moment = require('moment')
+const api = require('../api')
 class SearchResults extends React.Component {
   constructor(props){
     super(props);
@@ -11,8 +12,20 @@ class SearchResults extends React.Component {
     this.linkBuilder = this.linkBuilder.bind(this);
   }
 
-  reqestRideHandler(e){
-    e.preventDefault();
+  requestrideHandler(rideid){
+
+    console.log(this.state.user.id, rideid)
+    api.addPassenger(this.state.user.id, rideid)
+    .then(res=>
+    {
+      let oldhtml = document.getElementById(rideid).innerHTML;
+      if(res){
+        document.getElementById(rideid).innerHTML='Ride Requested!'
+      }else{
+        document.getElementById(rideid).innerHTML='Failed! Try again!'
+        setTimeout(()=>{document.getElementById(rideid).innerHTML=oldhtml}, 2000)
+      }
+    })
 
   }
 
@@ -27,7 +40,7 @@ class SearchResults extends React.Component {
       return <div></div>;
     }
 
-    return (<div><a id={rideid} onClick={this.requestrideHandler}>Request Ride</a></div>);
+    return (<div><a id={rideid} onClick={()=>this.requestrideHandler(rideid)}>Request Ride</a></div>);
   }
   
   
@@ -62,15 +75,15 @@ class SearchResults extends React.Component {
             </thead>
             <tbody>
           {
-            this.state.results.map((result,idx)=>{
+            this.state.results.map((result)=>{
               let time = moment.utc(result.depttime)
-            return  <tr key ={idx}>
+            return  <tr key ={result.id}>
             <td>{time.format('ddd, MMM Do YYYY')}</td>
             <td>{time.format('LT')}</td>
             <td>{result.fromloc}</td>
             <td>{result.toloc}</td>
             <td>{result.freeslots}</td>
-            <td></td>
+            <td>{this.linkBuilder(result.id)}</td>
             </tr>
             })
           }

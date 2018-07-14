@@ -178,8 +178,12 @@ app.post('/addpassenger',(req,res)=>{
   }else{
 
     db.addPassenger(passengerid, rideid)
-    .then(rescode=>{
-      res.status(rescode).send()
+    .then(added=>{
+      if(!added){
+        res.status(200).send(false);
+        return;
+      }
+      res.status(200).send(true)
     })
 
   }
@@ -188,16 +192,16 @@ app.post('/addpassenger',(req,res)=>{
 
 // REMOVE PASSENGER FROM RIDE
 // sets status code to 0
-app.post('/addpassenger',(req,res)=>{
+app.post('/removepassenger',(req,res)=>{
 
   const {username,fbid,email,phone} = req.body;
   if(!req.body || !username || !fbid || !email || !phone){
 
-    res.status(400).send('Must have credentials to signup')
+    res.status(400).send('Must have credentials to request this')
 
   }else{
 
-    db.addUser(username,fbid,email,phone)
+    db.removePassenger(username,fbid,email,phone)
     .then(rescode=>{
       res.status(rescode).send()
     })
