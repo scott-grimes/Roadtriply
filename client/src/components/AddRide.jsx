@@ -22,7 +22,7 @@ class AddRide extends React.Component{
       depttimeEND:now,
       maxdate
     }
-    
+
     this.handleChange = this.handleChange.bind(this)
   }
 
@@ -39,7 +39,8 @@ class AddRide extends React.Component{
     const depttimeBEGIN = document.getElementById('depttimeBEGIN').value
     const depttime = new Date(depttimeBEGIN);
     if(fromloc==='Select' || toloc==='Select'){
-      alert('Please select something')
+      document.getElementById('message').innerHTML='Your form is not complete!'
+      setTimeout(()=>{document.getElementById('message').innerHTML=''},2000);
       return;
     }
 
@@ -79,6 +80,7 @@ class AddRide extends React.Component{
           </select>
           <input type="submit" value="submit"></input>
           </form>
+          <div id="message"></div>
           
       
         </div>)

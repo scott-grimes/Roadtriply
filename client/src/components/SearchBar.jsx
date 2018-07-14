@@ -83,7 +83,6 @@ class SearchBar extends React.Component{
           </form>
           <div id="message"></div>
           <SearchResults results = {this.state.results}/>
-      
         </div>)
         }
     

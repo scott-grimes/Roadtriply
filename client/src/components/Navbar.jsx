@@ -6,11 +6,10 @@ constructor(props){
   super(props)
   this.state = { user: props.user};
   this.renderPage = props.renderPage;
-  console.log('inside navbar', props.user)
 }
 
 render(){
-  if(!this.state.user){
+  if(!this.state.user===null){
     return (
       <div className="navbar"><h1>roadtriply</h1>
         <div id='search' onClick={this.renderPage}>Search</div>
@@ -23,6 +22,7 @@ render(){
       <div className="navbar"><h1>roadtriply</h1>
       <div id='search' onClick={this.renderPage}>Search</div>
       <div id='account' onClick={this.renderPage}>Account</div>
+      <div id='addride' onClick={this.renderPage}>Create Ride</div>
       <div id='logout' onClick={this.renderpage}>Logout</div>
       
       </div>

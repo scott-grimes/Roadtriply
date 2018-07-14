@@ -24,6 +24,7 @@ class App extends React.Component {
 
   renderPage(e){
     e.preventDefault();
+    console.log(e);
     if(e.target.id==='logout'){
       api.logout(this.state.user.fbid)
       .then(()=>{;
@@ -37,7 +38,7 @@ class App extends React.Component {
   render () {
     const p = this.state.page;
     const user = this.state.user;
-    console.log(user)
+    console.log('user in page render',user)
     let page = <SearchBar />;
     if(p==='account'){
       page = <Account />;
@@ -48,7 +49,7 @@ class App extends React.Component {
     if(p==='register'){
       page = <Register changeUser={this.changeUser}/>;
     }
-    if(p==='asdf'){
+    if(p==='addride'){
       page = <AddRide />;
     }
     return (<div><div></div>
