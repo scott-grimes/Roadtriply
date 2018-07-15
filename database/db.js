@@ -30,7 +30,7 @@ const self = module.exports = {
     )
     .then(()=>knex.insert({username,fbid,email,phone}).into('users'))
     .then((userid)=>{console.log('added user', userid); return self.getUserById(userid)})
-    .catch((err)=>{console.log(err) return null});
+    .catch((err)=>{console.log(err); return null});
   },
 
   // Returns a list of all rides a driver is scheduled for, along with all of the passengers in the db for each
@@ -107,7 +107,7 @@ const self = module.exports = {
               ridelist[ind].passengers = manifest.map(e=>{return {passengerid:e.passengerid, statuscode:e.statuscode}});
           }));
         });
-        return p.then(()=>{console.log('got ridelist', ridelist) return ridelist;});
+        return p.then(()=>{console.log('got ridelist', ridelist); return ridelist;});
     });
   },
 
@@ -125,7 +125,7 @@ const self = module.exports = {
       .select()
       .then((res)=>{console.log('got all passengers',res); return res;})
     )
-    .catch((err)=>{console.log(err) return null})
+    .catch((err)=>{console.log(err); return null})
   },
 
   // Returns num of free slots a ride has
