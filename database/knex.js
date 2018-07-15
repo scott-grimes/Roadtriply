@@ -13,11 +13,12 @@ knex = require('knex')({
     connection: {
       host: host,
       user : user,  
-      password : password
+      password : password,
+      database: db
     }
   });
 
-if(process.env.DATABASERESET){
+if(false){
   console.log('resetting database')
   
   knex.schema.raw(`-- ---
@@ -106,8 +107,9 @@ if(process.env.DATABASERESET){
 
 }
 
-knex.schema.raw('USE db');
+//knex.schema.raw('USE db');
 console.log('database connected!')
+
 
 
 // .then(() => {
