@@ -2,10 +2,6 @@ let host =  process.env.CLEARDB_DATABASE_URL || 'localhost';
 const user = process.env.DBUSERNAME || 'student';    
 const password = process.env.DBPASSWORD || 'student';
 let db = process.env.DBNAME || 'db';
-
-if(process.env.NODE_ENV && process.env.NODE_ENV === 'test'){
-  db = 'testdb';
-}
  
 let knex;
 knex = require('knex')({
