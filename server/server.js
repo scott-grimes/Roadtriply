@@ -192,24 +192,45 @@ app.post('/addpassenger',(req,res)=>{
   
 });
 
-// REMOVE PASSENGER FROM RIDE
-// sets status code to 0
-app.post('/removepassenger',(req,res)=>{
+// ADD NEW PASSENGER TO RIDE
+app.post('/approvepassenger', (req, res) => {
 
-  const {username,fbid,email,phone} = req.body;
-  if(!req.body || !username || !fbid || !email || !phone){
+  const { passengerid, rideid } = req.body;
+  if (!req.body || !passengerid || !rideid) {
 
-    res.status(400).send('Must have credentials to request this')
+    res.status(400).send('Invalid credentials or ride id')
 
-  }else{
-
-    db.removePassenger(username,fbid,email,phone)
-    .then(rescode=>{
-      res.status(rescode).send()
-    })
+  } else {
+    console.log('approving ', passengerid, rideid)
+    db.approvePassenger(passengerid, rideid)
+      .then(approved => {
+        console.log(approved);
+        if (!approved) {
+          res.status(200).send(false);
+          return;
+        }
+        res.status(200).send(true)
+      })
 
   }
-  
+
+});
+
+// REMOVE PASSENGER FROM RIDE
+app.post("/removepassenger", (req, res) => {
+  const { passengerid, rideid } = req.body;
+  if (!req.body || !passengerid || !rideid) {
+    res.status(400).send("Invalid credentials or ride id");
+  } else {
+    console.log("removing ", passengerid, rideid);
+    db.removePassenger(passengerid, rideid).then(removed => {
+      if (!removed) {
+        res.status(200).send(false);
+        return;
+      }
+      res.status(200).send(true);
+    });
+  }
 });
 
 

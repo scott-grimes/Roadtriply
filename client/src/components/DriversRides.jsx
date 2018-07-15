@@ -7,8 +7,11 @@ class DriversRides extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      user:props.user, drivingRides:props.drivingRides
+      user:props.user, drivingRides:props.drivingRides,
+      
     };
+    this.renderPage = props.renderPage;
+    this.linkToRideBuilder = this.linkToRideBuilder.bind(this)
 
     //this.reqestRideHandler = this.requestrideHandler.bind(this);
     //this.linkBuilder = this.linkBuilder.bind(this);
@@ -36,15 +39,21 @@ class DriversRides extends React.Component {
     this.setState({user:newProps.user, drivingRides:newProps.drivingRides});
   }
 
-  linkBuilder (result){
-    if(result.confirmed===result.ridercount){
+  linkBuilder (ride){
+    if(ride.confirmed===ride.ridercount){
       return <div>All Full!</div>;
     }
-    else if(result.passengers.length===0){
+    else if(ride.passengers.length===0){
       return <div>No Requests So Far</div>
     }
     return <div>New Request!</div>
-    //return (<div><a id={result.id} onClick={()=>this.requestrideHandler(rideid)}>View Requests</a></div>);
+    //return (<div><a id={ride.id} onClick={()=>this.requestrideHandler(rideid)}>View Requests</a></div>);
+  }
+
+  linkToRideBuilder(ride){
+    console.log(ride.id,'rideid')
+    return <div onClick={()=>this.renderPage('ride:'+ride.id)}>View Ride</div>;
+
   }
   
   
@@ -76,18 +85,18 @@ class DriversRides extends React.Component {
             </thead>
             <tbody>
           {
-            this.state.drivingRides.map((result)=>{
-              let time = moment.utc(result.depttime)
-              let confirmed = confirmedPassengers(result.passengers);
-              result['confirmed'] = confirmed;
-            return  <tr key ={result.id}>
+            this.state.drivingRides.map((ride)=>{
+              let time = moment.utc(ride.depttime)
+              let confirmed = confirmedPassengers(ride.passengers);
+              ride['confirmed'] = confirmed;
+            return  <tr key ={ride.id}>
             <td>{time.format('ddd, MMM Do YYYY')}</td>
             <td>{time.format('LT')}</td>
-            <td>{result.fromloc}</td>
-            <td>{result.toloc}</td>
-            <td>{confirmed+'/'+result.ridercount}</td>
-            <td><a href="#">View Ride</a></td>
-            <td>{this.linkBuilder(result)}</td>
+            <td>{ride.fromloc}</td>
+            <td>{ride.toloc}</td>
+            <td>{confirmed+'/'+ride.ridercount}</td>
+              <td>{this.linkToRideBuilder(ride)}</td>
+            <td>{this.linkBuilder(ride)}</td>
             </tr>
             })
           }

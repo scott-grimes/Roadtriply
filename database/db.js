@@ -8,7 +8,7 @@ const self = module.exports = {
     return knex('users')
     .where('fbid', fbid)
     .select().first()
-    .then(res=>{console.log('got user',res); return res;});
+    .then(res=>{console.log('got user by fbid',fbid); return res;});
   },
 
   // Returns a user based on their id
@@ -17,7 +17,7 @@ const self = module.exports = {
     .where('id', id)
     .select().first()
       .then(res => {
-        console.log('got user', res); return res;});
+        console.log('got user by id', id); return res;});
   },
 
   // Add User
@@ -63,7 +63,7 @@ const self = module.exports = {
         
       })
       
-     return p.then(()=>{console.log('got rides by driver id',list); return list});
+     return p.then(()=>{console.log('got rides by driver id',driverid); return list});
       
     });
   },
@@ -74,7 +74,7 @@ const self = module.exports = {
     .where('id', id)
     .select().first()
       .then(res => {
-        console.log('got ride', res); return res});
+        console.log('got ride by id', id); return res});
   },
 
   // returns all rides meeting the given criteria
@@ -107,7 +107,7 @@ const self = module.exports = {
               ridelist[ind].passengers = manifest.map(e=>{return {passengerid:e.passengerid, statuscode:e.statuscode}});
           }));
         });
-        return p.then(()=>{console.log('got ridelist', ridelist); return ridelist;});
+        return p.then(()=>{console.log('got ridelist by from/to&date', fromloc, toloc, depttimeStr); return ridelist;});
     });
   },
 
@@ -123,7 +123,7 @@ const self = module.exports = {
       knex('manifests')
       .where('rideid', rideid)
       .select()
-      .then((res)=>{console.log('got all passengers',res); return res;})
+      .then((res)=>{console.log('got all passengers on ride', rideid); return res;})
     )
     .catch((err)=>{console.log(err); return null})
   },
@@ -144,7 +144,7 @@ const self = module.exports = {
       .select()
     )
     .then((confirmedPassengers)=>{
-      console.log('got num free slots')
+      console.log('got num free slots for ride id', rideid)
       return ride.ridercount - confirmedPassengers.length;
     })
     .catch((err)=>{console.log(err); return null})
@@ -174,11 +174,12 @@ const self = module.exports = {
     }
   }))
   .then(()=>knex('manifests').where({passengerid,rideid}).update({statuscode:0}))
-  .then(()=>{console.log('removed passenger'); return 200;})
-  .catch((err)=>{console.log(err); return 400})
+  .then((res)=>{console.log('removed passenger',res); return true;})
+  .catch((err)=>{console.log(err); return false})
 },
 
   approvePassenger : (passengerid, rideid)=>{
+    console.log('approving passenger',passengerid, 'on ride', rideid);
     return self.getNumFreeSlots(rideid)
     .then((freeslots=>{
       if(!freeslots){
@@ -186,7 +187,7 @@ const self = module.exports = {
       }
     }))
     .then(()=>knex('manifests').where({passengerid,rideid}).update({statuscode:1}))
-    .then(()=>{console.log('approved passenger'); return 200})
+    .then((res)=>{console.log(res,'approved passenger'); return 200})
     .catch((err)=>{console.log(err); return 400;})
   },
 

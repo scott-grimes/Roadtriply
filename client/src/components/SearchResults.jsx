@@ -12,18 +12,21 @@ class SearchResults extends React.Component {
       ridingRides:props.ridingRides
     };
 
-    this.reqestRideHandler = this.requestrideHandler.bind(this);
+    this.requestrideHandler = this.requestrideHandler.bind(this);
     this.linkBuilder = this.linkBuilder.bind(this);
   }
 
-  requestrideHandler(rideid){
-
-    if(document.getElementById(rideid).innerHTML='Ride Requested!'){
+  requestrideHandler(e){
+    e.preventDefault();
+    const rideid = e.target.id;
+    if(document.getElementById(rideid).innerHTML==='Ride Requested!'){
       return;
-    }
+    } 
+  
     api.addPassenger(this.state.user.id, rideid)
     .then(res=>
     {
+  
       let oldhtml = document.getElementById(rideid).innerHTML;
       if(res){
         document.getElementById(rideid).innerHTML='Ride Requested!'
@@ -43,12 +46,16 @@ class SearchResults extends React.Component {
   }
 
   linkBuilder (ride){
-
+    console.log('building link for ',ride)
     if(this.state.user===null){
       return <div></div>;
     }
 
-    return (<div><a id={ride.id} onClick={()=>this.requestrideHandler(ride.id)}>Request Ride</a></div>);
+    return <div>
+        <a id={ride.id} onClick={this.requestrideHandler}>
+          Request Ride
+        </a>
+      </div>;
   }
   
   
@@ -87,8 +94,6 @@ class SearchResults extends React.Component {
           {
             
             results.map((result)=>{
-              console.log(result)
-              
               let time = moment.utc(result.depttime)
             return  <tr key ={result.id}>
             <td>{time.format('ddd, MMM Do YYYY')}</td>

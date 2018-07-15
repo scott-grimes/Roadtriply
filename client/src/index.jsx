@@ -6,6 +6,7 @@ import Account from './components/Account.jsx'
 import AddRide from './components/AddRide.jsx';
 import Register from './components/Register.jsx';
 import Login from './components/Login.jsx';
+import Ride from './components/Ride.jsx';
 import api from './api';
 
 class App extends React.Component {
@@ -36,9 +37,7 @@ class App extends React.Component {
     }
   }
 
-  renderPage(e){
-    e.preventDefault && e.preventDefault();
-    const dest = e.target? e.target.id : 'search';
+  renderPage(dest){
     
     if(dest==='logout'){
       api.logout(this.state.user.fbid)
@@ -55,10 +54,11 @@ class App extends React.Component {
 
   render () {
     const p = this.state.page;
+    console.log(p)
     const user = this.state.user;
     let page = <SearchBar user={user} changeUser={this.changeUser}/>;
     if(p==='account'){
-      page = <Account drivingRides = {this.state.drivingRides} ridingRides = {this.state.ridingRides} user={user}/>;
+      page = <Account renderPage = {this.renderPage} drivingRides = {this.state.drivingRides} ridingRides = {this.state.ridingRides} user={user}/>;
     }
     if(p==='login'){
       page = <Login changeUser={this.changeUser}/>;
@@ -67,7 +67,15 @@ class App extends React.Component {
       page = <Register changeUser={this.changeUser}/>;
     }
     if(p==='addride'){
-      page = <AddRide renderPage = {this.renderPage} user = {this.state.user}/>;
+      page = <AddRide renderPage = {this.renderPage} user = {this.state.user} />;
+    }
+    if(p.slice(0,4)==='ride'){
+      let ridenum = +p.slice(5);
+      console.log(ridenum);
+      console.log(this.state.drivingRides)
+      let ride  = this.state.drivingRides.find(x=>x.id===ridenum);
+      console.log(ride);
+      page = <Ride ride={ride} user={this.state.user} />;
     }
     return (<div><div></div>
       <Navbar renderPage = {this.renderPage} user = {user}/>
