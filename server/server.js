@@ -272,11 +272,14 @@ app.post('/ridesbyuser',(req,res)=>{
   // NEED AUTH IN HERE
   
   db.getRidesByPassengerId(req.body.id)
-  .then(response=>{
-    console.log(response)
-    res.send(response)
-  })
-  .catch(err=>{console.log(err); res.status(400).send(err)})
+    .then(response => {
+      console.log(response);
+      res.send(response);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(400).send(err);
+    });
 
 
 });
