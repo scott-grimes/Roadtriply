@@ -7,17 +7,14 @@ const self = module.exports = {
   getUserByFbid : (fbid)=> {
     return knex('users')
     .where('fbid', fbid)
-    .select().first()
-    .then(res=>{console.log('got user by fbid',fbid); return res;});
+    .select().first();
   },
 
   // Returns a user based on their id
   getUserById : (id)=> {
     return knex('users')
     .where('id', id)
-    .select().first()
-      .then(res => {
-        console.log('got user by id', id); return res;});
+    .select().first();
   },
 
   // Add User
