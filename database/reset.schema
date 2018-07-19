@@ -42,7 +42,8 @@ CREATE TABLE `rides` (
   `fromloc` TEXT,
   `toloc` TEXT,
   `depttime` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (driverid) REFERENCES users(id)
 );
 
 ALTER TABLE rides AUTO_INCREMENT = 1000;
@@ -54,7 +55,9 @@ CREATE TABLE `manifests` (
   `rideid` INTEGER,
   `passengerid` INTEGER,
   `statuscode` INTEGER,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (rideid) REFERENCES rides(id),
+  FOREIGN KEY (passengerid) REFERENCES users(id)
 );
 
 ALTER TABLE manifests AUTO_INCREMENT = 1000;
