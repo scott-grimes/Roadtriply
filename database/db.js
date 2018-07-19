@@ -138,7 +138,7 @@ const self = module.exports = {
 
   // returns all rides meeting the given criteria
   // returns the count of free slots in each ride
-  searchRides : ( fromloc, toloc, depttimeStr )=>{
+  search : ( fromloc, toloc, depttimeStr )=>{
     let starttime = moment.utc(depttimeStr);
     
     starttime = starttime.add(1,'minutes');
