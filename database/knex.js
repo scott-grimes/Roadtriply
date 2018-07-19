@@ -41,7 +41,7 @@ if(false){
     'id' INTEGER AUTO_INCREMENT NOT NULL,
     'createdAt' TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     'updatedAt' TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    'fbid' TEXT,
+    'password' TEXT,
     'username' TEXT,
     'email' TEXT,
     'phone' TEXT,

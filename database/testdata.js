@@ -67,7 +67,7 @@ const getRandomTime = () => {
 
 }
 
-const randFbId = () => Math.floor(Math.random() * 100000000000).toString();
+//const randFbId = () => Math.floor(Math.random() * 100000000000).toString();
 
 const randRiderCount = () => Math.floor(Math.random() * 4)+1;
 
@@ -76,12 +76,13 @@ const getRandomPhone = ()=>new Array(10).fill().map(x=>Math.floor(Math.random()*
 const genRandomUser = ()=>{
   const username = names[Math.floor(Math.random() * (names.length - 1))];
   const email = username.replace(' ','')+'@gmail.com'
-  const fbid = randFbId();
+  //const fbid = randFbId();
+  const password = 'a'
   const phone = getRandomPhone();
   const id = userID;
 
   userID++;
-  return {username, fbid, id, email, phone};
+  return {username, password, id, email, phone};
 }
 
 const genRandomRide = () => {

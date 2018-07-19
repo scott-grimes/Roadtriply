@@ -2,18 +2,25 @@ require("dotenv").config();
 const path = require("path");
 const express = require("express");
 const bodyParser = require("body-parser");
-const { passport } = require("./passport");
+//const { passport } = require("./passport");
+const passenger = require("./routes/passenger");
+const ride = require("./routes/ride");
+const rides = require("./routes/rides");
+const user = require("./routes/user");
 const port = process.env.PORT || 1337;
 
 // SETUP
 const app = express();
 app.use(bodyParser.json());
 app.use(require('express-session')({ secret: 'keyboard cat', resave: false, saveUninitialized: false }));
-app.use(passport.initialize());
-app.use(passport.session());
+//app.use(passport.initialize());
+//app.use(passport.session());
 
 // ENDPOINTS
-
+app.use("/user", user);
+app.use("/ride", ride);
+app.use("/rides", rides);
+app.use("/passenger", passenger);
 
 
 app.get("/test", (req, res) => {

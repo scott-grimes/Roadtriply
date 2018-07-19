@@ -1,69 +1,58 @@
 process.env.NODE_ENV = 'testing';
 const assert = require('assert');
-const db = require('../database/db')
-const knex = require('../database/knex');
+const controller = require('../server/controller')
 var chai = require('chai');
-var chaiHttp = require('chai-http');
+const {knex} = require('../database/knex')
 const should = chai.should();
 
 // SERVER TESTS
 describe('Server Functions', () => {
-  const UserA = {username: 'Leonardo Lagarde', fbid: '75569817661', id: 1000, email: 'LeonardoLagarde@gmail.com', phone: '5111722389'};
-  const UserB = {username: 'Karrie Konrad', fbid: '35706594253', id: 1001, email: 'KarrieKonrad@gmail.com', phone: '5488682297'};
-  const AsRide = {'driverid':1000,'id':1000,'fromloc':'Chicopee, Massachusetts','toloc':'Anderson, Indiana','depttime':new Date('2019-01-05T19:00:00.000Z'),'ridercount':2}
+  const UserA = {username: 'a', password: 'a', email: 'a', phone: 'a'};
+  const UserB = { username: 'b', password: 'b', email: 'b', phone: 'b' };
+  const AsRide = {'driverid':1000,'fromloc':'LOC A','toloc':'LOC B','depttime':new Date('2019-01-05T19:00:00.000Z'),'ridercount':2}
 
   beforeEach(function () {
     knex('users').truncate();
     knex('rides').truncate();
     knex('manifests').truncate();
+    knex.raw("ALTER TABLE users AUTO_INCREMENT = 1000;");
+    knex.raw("ALTER TABLE rides AUTO_INCREMENT = 1000;");
+    knex.raw("ALTER TABLE manifests AUTO_INCREMENT = 1000;");
   });
 
   describe('Users', () => {
 
     it('should add a new user to the database',(done)=>{
-      const {username, fbid, email, phone } = UserA;
-      db.addUser(username, fbid, email, phone)
-      .then(knex('users').select('fbid',fbid))
-      .then(result=>result.id.should.equal(1000))
+      controller.addUser(UserA)
+      .then(knex('users').select('id',1000))
+      .then(result=>result.username.should.equal('a'))
       .then(()=>done());
     });
 
     it('should fetch a user by id from the database',(done)=>{
-      db.getUserById(1000).then(res => {
-        res.username.should.equal("Leonardo Lagarde");
-        done();
-      });
-    });
-
-    it('should fetch a user by fbid from the database', (done) => {
-      db.getUserByFbid("75569817661").then(res => {
-        res.username.should.equal("Leonardo Lagarde");
+      controller.getUserById(1000).then(res => {
+        res.username.should.equal('a');
         done();
       });
     });
 
     it('should fail to fetch a user that does not exist',(done)=>{
-      db.getUserById(0001).then(res => {
-        res.should.equal(null);
+      controller.getUserById(999).then(res => {
+        res.should.equal(false);
       })
-      .then(db.getUserByFbid('0001'))
+    });
+
+    it('should not add a user who already exists to the database (same username)',(done)=>{
+      
+      controller.addUser(UserA)
       .then((res)=>{
-        res.should.equal(null);
+        res.should.equal(false);
         done();
       })
     });
-
-    it('should not add a user who already exists to the database (same fbid)',(done)=>{
-      const { username, fbid, email, phone } = UserA;
-      db.addUser(username, fbid, email, phone);
-      return;
-      done().then(knex('users').select('fbid', fbid))
-      .then(result => result.id.should.equal(1000))
-      .then(() => done());
-    });
   });
 
-  describe('Rides', () => {
+  xdescribe('Rides', () => {
 
     before(function() {
       console.log('add a single user to the database',()=>{});
@@ -75,7 +64,7 @@ describe('Server Functions', () => {
     it('should not add ride to a user who does not exist',()=>{});
   });
 
-  describe('Passenger', () => {
+  xdescribe('Passenger', () => {
     before(function () {
       console.log('add two users (driver and rider), and a single blank ride')
     });
@@ -90,7 +79,7 @@ describe('Server Functions', () => {
 
   });
 
-  describe('Searching', () => {
+  xdescribe('Searching', () => {
     before(function () {
       console.log('add a single user. add a ride from city A, add a ride from city B, and a ride from City A at another time',()=>{});
     });

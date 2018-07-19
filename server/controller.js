@@ -1,24 +1,19 @@
 const db = require("../database/db");
 
 module.exports = {
-  getUserByFbid: ({fbid})=>{
-    if(fbid === undefined || fbid==='') throw ('No fbid for user')
-    return db.getUserByFbid(fbid);
-  },
 
   getUserById: ({ id }) => {
     if (id === undefined || id==='') throw ('No id given for user')
     return db.getUserById(id);
   },
 
-  addUser: ({ username, fbid, email, phone }) => {
+  addUser: ({ username, password, email, phone }) => {
     if (username === undefined || username === '') throw ('No username supplied for user')
-    if (fbid === undefined || fbid === '') throw ('No fbid supplied for user')
+    if (password === undefined || password === "") throw "No password supplied for user";
     if (email === undefined || email === '') throw ('No email supplied for user')
     if (phone === undefined || phone === '') throw ('No phone supplied for user')
 
-
-    return db.addUser(username,fbid,email,phone);
+    return db.addUser(username, password,email,phone);
   },
 
   getRidesByDriverId : ({driverid}) =>{
@@ -44,45 +39,45 @@ module.exports = {
 
   getNumFreeSlots :({rideid})=>{
     if (rideid === undefined || rideid === "") throw "No rideid supplied for ride";
-    db.getNumFreeSlots(rideid);
+    return db.getNumFreeSlots(rideid);
   },
   addPassenger: ({passengerid, rideid}) => {
     if (passengerid === undefined || passengerid === "") throw "No passengerid supplied for passenger";
     if (rideid === undefined || rideid === "") throw "No rideid supplied for passenger";
-    db.addPassenger(passengerid,rideid)
+    return db.addPassenger(passengerid,rideid)
   },
 
   // add the passenger to the ride specified, if there is enough space
   removePassenger: ({passengerid, rideid}) => {
     if (passengerid === undefined || passengerid === "") throw "No passengerid supplied for passenger";
     if (rideid === undefined || rideid === "") throw "No rideid supplied for passenger";
-    db.removePassenger(passengerid,rideid);
+    return db.removePassenger(passengerid,rideid);
   },
 
   approvePassenger: ({passengerid, rideid}) => {
     if (passengerid === undefined || passengerid === "") throw "No passengerid supplied for passenger";
     if (rideid === undefined || rideid === "") throw "No rideid supplied for passenger";
-    db.approvePassenger(passengerid,rideid);
+   return db.approvePassenger(passengerid,rideid);
   },
 
   // get rides a user has requested
   // Returns a list of all the passengers a given ride has (conf/unconfirmed)
   getRidesByPassengerId: ({passengerid}) => {
     if (passengerid === undefined || passengerid === "") throw "No passengerid supplied for rides";
-    db.getRidesByPassengerId(passengerid)
+   return db.getRidesByPassengerId(passengerid)
   
   },
 
 
   // Add ride
 
-  addRide: (driverid, ridercount, fromloc, toloc, depttimeStr) => {
+  addRide: ({driverid, ridercount, fromloc, toloc, depttimeStr}) => {
     if (driverid === undefined || driverid === "") throw "No driverid supplied for ride";
     if (ridercount === undefined || ridercount === "") throw "No ridercount supplied for ride";
     if (fromloc === undefined || fromloc === "") throw "No fromloc supplied for ride";
     if (toloc === undefined || toloc === "") throw "No toloc supplied for ride";
     if (depttimeStr === undefined || depttimeStr === "") throw "No depttimeStr supplied for ride";
-    db.addRide(driverid,ridercount,fromloc,toloc,depttimeStr);
+    return db.addRide(driverid,ridercount,fromloc,toloc,depttimeStr);
   },
 
   // loginCorrect: ({ username, password }) => {
