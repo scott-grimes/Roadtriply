@@ -3,14 +3,14 @@ const moment = require('moment');
 
 const self = module.exports = {
 
-
+  // USER THINGS
+  
   // Returns a user based on their id
   getUserById : (id)=> 
      knex('users')
     .where('id', id)
     .select().first()
   ,
-
   // Add User
   addUser :  (username,password,email,phone) => 
      knex('users').where('username',username).select().first()
@@ -24,6 +24,9 @@ const self = module.exports = {
       )
       .then(id => knex('users').where('id',id).select().first() )
   ,
+
+
+  // RIDE THINGS
 
   // Returns a list of all rides a driver is scheduled for, along with all of the passengers in the db for each
 

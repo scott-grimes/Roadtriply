@@ -9,21 +9,26 @@ constructor(props){
   super(props)
   this.state = {
     user: props.user,
-    drivingRides: props.drivingRides,
-    ridingRides: props.ridingRides
+    drivingRides: [],
+    ridingRides: [],
+    loading:true
   }
-  this.renderPage = props.renderPage;
-  this.user = props.user;
+
+  console.log('should fetch a users rides and drives')
 }
 
-componentWillReceiveProps(newProps){
-  this.setState({user: newProps.user,
-    drivingRides:newProps.drivingRides,
-    ridingRides: newProps.ridingRides});
 
-}
+
+
 
 render(){
+  if(this.state.user===null){
+    return (<div>You must be logged in to view this page</div>)
+  }
+
+  if(this.state.loading){
+    return(<div>Loading...</div>)
+  }
 
   return(<div>
    Account Page

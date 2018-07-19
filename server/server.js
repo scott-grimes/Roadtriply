@@ -22,7 +22,6 @@ app.use("/ride", ride);
 app.use("/rides", rides);
 app.use("/passenger", passenger);
 
-
 app.get("/test", (req, res) => {
   console.log(req.body);
   res.send(req.body);

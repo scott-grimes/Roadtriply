@@ -2,6 +2,7 @@ const db = require("../database/db");
 
 module.exports = {
 
+  // get a user given their id
   getUserById: ({ id }) => {
     if (id === undefined || id==='') throw ('No id given for user')
     return db.getUserById(id).then(result => {
@@ -17,6 +18,7 @@ module.exports = {
       });
   },
 
+  // add a user
   addUser: ({ username, password, email, phone }) => {
     if (username === undefined || username === '') throw ('No username supplied for user')
     if (password === undefined || password === "") throw "No password supplied for user";
@@ -37,6 +39,7 @@ module.exports = {
       });
   },
 
+  // given a user's id, get all of the rides they are driving on 
   getRidesByDriverId : ({driverid}) =>{
     if (driverid === undefined || driverid === '') throw ('No driverid supplied for ride')
     return db.getRidesByDriverId(driverid)
@@ -84,6 +87,8 @@ module.exports = {
         return false;
       });
   },
+
+  // returns all of the passengers on a given ride
   getAllPassengers: ({rideid})=>{
     if (rideid === undefined || rideid === "") throw "No rideid supplied for passengerlist";
     db.getAllPassengers(rideid)
@@ -99,6 +104,7 @@ module.exports = {
         return false;
       });
   },
+
 
   getNumFreeSlots :({rideid})=>{
     if (rideid === undefined || rideid === "") throw "No rideid supplied for ride";
@@ -116,6 +122,8 @@ module.exports = {
         return false;
       });
   },
+
+
   addPassenger: ({passengerid, rideid}) => {
     if (passengerid === undefined || passengerid === "") throw "No passengerid supplied for passenger";
     if (rideid === undefined || rideid === "") throw "No rideid supplied for passenger";
@@ -190,7 +198,6 @@ module.exports = {
 
 
   // Add ride
-
   addRide: ({driverid, ridercount, fromloc, toloc, depttimeStr}) => {
     if (driverid === undefined || driverid === "") throw "No driverid supplied for ride";
     if (ridercount === undefined || ridercount === "") throw "No ridercount supplied for ride";

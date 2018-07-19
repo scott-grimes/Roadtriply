@@ -8,7 +8,6 @@ const times = ["1 AM", "2 AM", "3 AM", "4 AM", "5 AM", "6 AM", "7 AM", "8 AM", "
 
 const HOUR = 1000*60*60;
 const DAY = HOUR*24;
-
 class AddRide extends React.Component{
 
   constructor(props){
