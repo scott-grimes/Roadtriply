@@ -11,15 +11,11 @@ router.get('/',(req,res)=>{
       .getUserById(req.query)
       .then(result => {
         if (!result) {
-          throw ('No User Found')
+          res.status(400).send(false);
         }
         console.log('User Found')
         return res.send(result);
       })
-      .catch(err => {
-        console.log(err);
-        return res.status(400).send(false);
-      });
   }
 
   else if(req.query.name){
@@ -40,15 +36,11 @@ router.post('/', (req, res) => {
     .addUser(req.body)
     .then(result => {
       if (!result) {
-        throw ('User not added')
+        return res.status(400).send(false);
       }
       console.log('User Added')
       return res.send(result);
     })
-    .catch(err => {
-      console.log(err);
-      return res.status(400).send(false);
-    });
 });
 
 router.put('/', (req, res) => {

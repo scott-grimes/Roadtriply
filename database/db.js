@@ -55,7 +55,9 @@ const self = module.exports = {
         
       })
       
-     return p.then(()=>{console.log('got rides by driver id',driverid); return list});
+     return p.then(()=>{
+       //console.log('got rides by driver id',driverid); 
+       return list});
       
     });
   },
@@ -114,7 +116,6 @@ const self = module.exports = {
       knex('manifests')
       .where('rideid', rideid)
       .select()
-      .then((res)=>{console.log('got all passengers on ride', rideid); return res;})
     );
   },
 
@@ -127,6 +128,7 @@ const self = module.exports = {
         throw('Ride does not exist');
       }
       ride = res;
+
     })
     .then(()=>
       knex('manifests')
@@ -134,7 +136,8 @@ const self = module.exports = {
       .select()
     )
     .then((confirmedPassengers)=>{
-      console.log('got num free slots for ride id', rideid)
+      // console.log(confirmedPassengers, 'confirmed passengers');
+      // console.log(rideid, " has ", ride.ridercount - confirmedPassengers.length,' free slots');
       return ride.ridercount - confirmedPassengers.length;
     })
   },
@@ -150,33 +153,36 @@ const self = module.exports = {
     .then(()=>knex('manifests').where({passengerid,rideid}).select())
     .then((alreadyAsked)=>{if(alreadyAsked.length>0){throw('User Already Requested A Ride')}})
     .then(()=>knex.insert({passengerid,rideid, statuscode:0}).into('manifests'))
-    .then((id)=>{console.log('inserted new passenger into db',id); 
-    return knex('manifests').where('id',id).select().first()})
+    .then((id)=>{
+      //console.log('inserted new passenger into db',id); 
+    return knex('manifests').where('id',id).select().first()
+  })
   },
 
  // add the passenger to the ride specified, if there is enough space
  removePassenger : (passengerid, rideid)=>{
-  return self.getNumFreeSlots(rideid)
-  .then((freeslots=>{
-    if(!freeslots){
-      throw('No Space to add user')
+  return knex('manifests').where({passengerid,rideid}).update({statuscode:0})
+  .then((numChanges)=>{
+    if(numChanges===0){
+      throw('Invalid passengerid or rideid')
     }
-  }))
-  .then(()=>knex('manifests').where({passengerid,rideid}).update({statuscode:0}))
-  .then((id)=>{console.log('removed passenger',res); 
-  return knex('manifests').where('id',id).select().first();})
+    //console.log('removed passenger',res); 
+    return knex('manifests').where({ passengerid, rideid }).select().first();})
 },
 
   approvePassenger : (passengerid, rideid)=>{
-    console.log('approving passenger',passengerid, 'on ride', rideid);
+    //console.log('approving passenger',passengerid, 'on ride', rideid);
     return self.getNumFreeSlots(rideid)
     .then((freeslots=>{
-      if(!freeslots){
+      if(freeslots<=0){
+       
         throw('No Space to add user')
       }
     }))
     .then(()=>knex('manifests').where({passengerid,rideid}).update({statuscode:1}))
-      .then((id) => { console.log(res, 'approved passenger');  return knex('manifests').where('id', id).select().first();})
+      .then(() => { 
+        
+        return knex('manifests').where({ passengerid, rideid }).select().first();})
   
   },
 
@@ -200,7 +206,9 @@ getRidesByPassengerId : (passengerid)=>{
             
      
     });
-    return p.then(()=>{console.log('got rides by pass id'); return manifests});
+    return p.then(()=>{
+      //console.log('got rides by pass id'); 
+      return manifests});
   })
 },
 
@@ -210,7 +218,9 @@ getRidesByPassengerId : (passengerid)=>{
  addRide :(driverid, ridercount, fromloc, toloc, depttimeStr )=>{
   const depttime = new Date(depttimeStr);
   return knex.insert({driverid, ridercount, fromloc, toloc, depttime}).into('rides')
-  .then((id)=>{console.log('added ride',id); return knex('rides').where('id',id).select().first()})
+  .then((id)=>{
+    //console.log('added ride',id); 
+    return knex('rides').where('id',id).select().first()})
   
 }
 

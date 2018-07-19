@@ -8,15 +8,11 @@ router.get('/driverid', (req, res) => {
     .getRidesByDriverId(req.query)
     .then(result => {
       if (!result) {
-        throw ('No Rides Found')
+        return res.status(400).send(false);
       }
       console.log('Rides Found')
       return res.send(result);
     })
-    .catch(err => {
-      console.log(err);
-      return res.status(400).send(false);
-    });
 });
 
 router.get('/search', (req, res) => {
@@ -25,15 +21,11 @@ router.get('/search', (req, res) => {
     .searchRides(req.query)
     .then(result => {
       if (!result) {
-        throw ('No Rides Found')
+        return res.status(400).send(false);
       }
       console.log('Rides Found')
       return res.send(result);
     })
-    .catch(err => {
-      console.log(err);
-      return res.status(400).send(false);
-    });
 });
 
 router.get('/passengerid', (req, res) => {
@@ -42,15 +34,11 @@ router.get('/passengerid', (req, res) => {
     .getRidesByPassengerId(req.query)
     .then(result => {
       if (!result) {
-        throw ('Rides not found')
+        return res.status(400).send(false);
       }
       console.log('Rides Found')
       return res.send(result);
     })
-    .catch(err => {
-      console.log(err);
-      return res.status(400).send(false);
-    });
 });
 
 

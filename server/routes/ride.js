@@ -8,15 +8,11 @@ router.get("/", (req, res) => {
     .getRideById(req.query)
     .then(result => {
       if (!result) {
-        throw "No Ride Found";
+        return res.status(400).send(false)
       }
       console.log("Ride Found");
       return res.send(result);
     })
-    .catch(err => {
-      console.log(err);
-      return res.status(400).send(false);
-    });
 });
 
 router.get("/freeslots", (req, res) => {
@@ -24,16 +20,12 @@ router.get("/freeslots", (req, res) => {
   controller
     .getNumFreeSlots(req.query)
     .then(result => {
-      if (result === undefined) {
-        throw "No Ride Found";
+      if (result === false) {
+        return res.status(400).send(false);
       }
       console.log("Ride Found");
       return res.send(result);
     })
-    .catch(err => {
-      console.log(err);
-      return res.status(400).send(false);
-    });
 });
 
 router.post("/", (req, res) => {
@@ -42,14 +34,11 @@ router.post("/", (req, res) => {
     .addRide(req.body)
     .then(result => {
       if (!result) {
-        throw "Ride not added";
+       
+       return  res.status(400).send(false);
       }
       console.log("Ride Added");
       return res.send(result);
-    })
-    .catch(err => {
-      console.log(err);
-      return res.status(400).send(false);
     });
 });
 

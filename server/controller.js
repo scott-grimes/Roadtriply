@@ -4,7 +4,17 @@ module.exports = {
 
   getUserById: ({ id }) => {
     if (id === undefined || id==='') throw ('No id given for user')
-    return db.getUserById(id);
+    return db.getUserById(id).then(result => {
+      if (!result) {
+        throw ('No User Found')
+      }
+      //console.log('User Found')
+      return result;
+    })
+      .catch(err => {
+        //console.log(err);
+        return false
+      });
   },
 
   addUser: ({ username, password, email, phone }) => {
@@ -13,58 +23,168 @@ module.exports = {
     if (email === undefined || email === '') throw ('No email supplied for user')
     if (phone === undefined || phone === '') throw ('No phone supplied for user')
 
-    return db.addUser(username, password,email,phone);
+    return db.addUser(username, password,email,phone)
+      .then(result => {
+        if (!result) {
+          throw ('User not added')
+        }
+        //console.log('User Added')
+        return result;
+      })
+      .catch(err => {
+        //console.log(err);
+        return false;
+      });
   },
 
   getRidesByDriverId : ({driverid}) =>{
     if (driverid === undefined || driverid === '') throw ('No driverid supplied for ride')
-    return db.getRidesByDriverId(driverid);
+    return db.getRidesByDriverId(driverid)
+    .then(result => {
+      if (!result) {
+        throw ('No Rides Found')
+      }
+      //console.log('Rides Found')
+      return result;
+    })
+      .catch(err => {
+        //console.log(err);
+        return false
+      });
   },
 
   getRideById: ({id})=>{
     if (id === undefined || id === '') throw ('No id supplied for ride')
-    return db.getRideById(id);
+    return db.getRideById(id).then(result => {
+      if (!result) {
+        throw "No Ride Found";
+      }
+      //console.log("Ride Found");
+      return result;
+    })
+      .catch(err => {
+        //console.log(err);
+        return false;
+      });
   },
 
   searchRides: ({fromloc, toloc, depttimeStr})=>{
     if (fromloc === undefined || fromloc === "") throw "No fromloc supplied for ride";
     if (toloc === undefined || toloc === "") throw "No toloc supplied for ride";
     if (depttimeStr === undefined || depttimeStr === "") throw "No depttimeStr supplied for user";
-    return searchRides(fromloc,toloc,depttimeStr);
+    return db.searchRides(fromloc, toloc, depttimeStr).then(result => {
+      if (!result) {
+        throw "passenger not added";
+      }
+      //console.log("passenger added");
+      return result;
+    })
+      .catch(err => {
+        //console.log(err);
+        return false;
+      });
   },
   getAllPassengers: ({rideid})=>{
     if (rideid === undefined || rideid === "") throw "No rideid supplied for passengerlist";
-    db.getAllPassengers(rideid);
+    db.getAllPassengers(rideid)
+    .then(result => {
+      if (!result) {
+        throw "No Passengers Found";
+      }
+      //console.log("Passengers Found");
+      return result;
+    })
+      .catch(err => {
+        //console.log(err);
+        return false;
+      });
   },
 
   getNumFreeSlots :({rideid})=>{
     if (rideid === undefined || rideid === "") throw "No rideid supplied for ride";
-    return db.getNumFreeSlots(rideid);
+    return db.getNumFreeSlots(rideid)
+    .then(result => {
+      console.log('result is ',result)
+      if (result === undefined) {
+        throw "No Ride Found";
+      }
+      //console.log("Ride Found");
+      return result;
+    })
+      .catch(err => {
+        //console.log(err);
+        return false;
+      });
   },
   addPassenger: ({passengerid, rideid}) => {
     if (passengerid === undefined || passengerid === "") throw "No passengerid supplied for passenger";
     if (rideid === undefined || rideid === "") throw "No rideid supplied for passenger";
     return db.addPassenger(passengerid,rideid)
+      .then(result => {
+        //console.log('in addpassenger, result of adding in db',result)
+        if (!result) {
+          throw "passenger not added";
+        }
+        //console.log("passenger added");
+        return result;
+      })
+      .catch(err => {
+        //console.log(err);
+        return false;
+      });
   },
 
   // add the passenger to the ride specified, if there is enough space
   removePassenger: ({passengerid, rideid}) => {
     if (passengerid === undefined || passengerid === "") throw "No passengerid supplied for passenger";
     if (rideid === undefined || rideid === "") throw "No rideid supplied for passenger";
-    return db.removePassenger(passengerid,rideid);
+    return db.removePassenger(passengerid, rideid)
+    .then(result => {
+      if (!result) {
+        throw "passenger not removed";
+      }
+      //console.log("passenger removed");
+      return result;
+    })
+      .catch(err => {
+        //console.log(err);
+        return false;
+      });
   },
 
   approvePassenger: ({passengerid, rideid}) => {
     if (passengerid === undefined || passengerid === "") throw "No passengerid supplied for passenger";
     if (rideid === undefined || rideid === "") throw "No rideid supplied for passenger";
-   return db.approvePassenger(passengerid,rideid);
+    return db.approvePassenger(passengerid, rideid).then(result => {
+      console.log(result)
+      if (!result) {
+        throw "pass not approved";
+      }
+      //console.log("pass approved");
+      return result;
+    })
+      .catch(err => {
+        //console.log(err);
+        return false
+      });
   },
 
   // get rides a user has requested
   // Returns a list of all the passengers a given ride has (conf/unconfirmed)
   getRidesByPassengerId: ({passengerid}) => {
     if (passengerid === undefined || passengerid === "") throw "No passengerid supplied for rides";
-   return db.getRidesByPassengerId(passengerid)
+    return db.getRidesByPassengerId(passengerid)
+    .then(result => {
+      if (!result) {
+        throw ('Rides not found')
+      }
+      //console.log('Rides Found')
+      return result
+    })
+      .catch(err => {
+        //console.log(err);
+        return false;
+      });
   
   },
 
@@ -77,7 +197,17 @@ module.exports = {
     if (fromloc === undefined || fromloc === "") throw "No fromloc supplied for ride";
     if (toloc === undefined || toloc === "") throw "No toloc supplied for ride";
     if (depttimeStr === undefined || depttimeStr === "") throw "No depttimeStr supplied for ride";
-    return db.addRide(driverid,ridercount,fromloc,toloc,depttimeStr);
+    return db.addRide(driverid, ridercount, fromloc, toloc, depttimeStr).then(result => {
+      if (!result) {
+        throw "Ride not added";
+      }
+      //console.log("Ride Added");
+      return result;
+    })
+      .catch(err => {
+        //console.log(err);
+        return false;
+      });
   },
 
   // loginCorrect: ({ username, password }) => {
