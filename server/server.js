@@ -12,7 +12,7 @@ const port = process.env.PORT || 1337;
 // SETUP
 const app = express();
 app.use(bodyParser.json());
-app.use(require('express-session')({ secret: 'keyboard cat', resave: false, saveUninitialized: false }));
+//app.use(require('express-session')({ secret: 'keyboard cat', resave: false, saveUninitialized: false }));
 //app.use(passport.initialize());
 //app.use(passport.session());
 
