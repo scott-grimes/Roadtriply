@@ -71,17 +71,19 @@ module.exports = {
       });
   },
 
-  searchRides: ({fromloc, toloc, depttimeStr})=>{
+  searchRides: ({ fromloc, toloc, depttime})=>{
     if (fromloc === undefined || fromloc === "") throw "No fromloc supplied for ride";
     if (toloc === undefined || toloc === "") throw "No toloc supplied for ride";
-    if (depttimeStr === undefined || depttimeStr === "") throw "No depttimeStr supplied for user";
-    return db.searchRides(fromloc, toloc, depttimeStr).then(result => {
-      if (!result) {
-        throw "passenger not added";
-      }
-      //console.log("passenger added");
-      return result;
-    })
+    if (depttime === undefined || depttime === "") throw "No depttime supplied for user";
+    return db
+      .search(fromloc, toloc, depttime)
+      .then(result => {
+        if (!result) {
+          throw "passenger not added";
+        }
+        //console.log("passenger added");
+        return result;
+      })
       .catch(err => {
         //console.log(err);
         return false;
