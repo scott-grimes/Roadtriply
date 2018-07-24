@@ -21,8 +21,14 @@ class App extends React.Component {
       this.setState({user:x}, ()=>{
       console.log('in index, should not push history')
       })};
+      this.logout = this.logout.bind(this);
     // this.changeUser = this.changeUser.bind(this);
     // this.updateUserRides = this.updateUserRides.bind(this);
+  }
+
+  logout(){
+    api.logout()
+      .then(()=>this.setState({user:null}));
   }
 
   // refreshes a users rides (both as driver and passenger)
@@ -42,9 +48,7 @@ class App extends React.Component {
   
     let account = ()=> <Account drivingRides = {this.state.drivingRides} ridingRides = {this.state.ridingRides} user={user}/>;
     
-    let login =()=>  <Login changeUser={this.changeUser}/>;
-
-    let register =()=> <Register changeUser={this.changeUser}/>;
+    
    
     let addRide =()=> <AddRide user = {this.state.user} />;
     
@@ -52,12 +56,26 @@ class App extends React.Component {
 
     return <Router>
         <div>
-          <Navbar user={user} />
+          <Navbar user={user} logout={this.logout} />
           <Route exact path="/" component={search} />
           <Route path="/search" component={search} />
           <Route path="/account" component={account} />
-          <Route path="/login" component={login} />
-          <Route path="/register" component={register} />
+
+        <Route
+          path="/login"
+          render={({ history }) => (
+            <Login history={history} changeUser={this.changeUser} />
+          )}
+        />
+
+        <Route
+          path="/register"
+          render={({ history }) => (
+            <Register history={history} changeUser={this.changeUser} />
+          )}
+        />
+
+          
           <Route path="/addride" component={addRide} />
           <Route path="/ride" component={ride} />
         </div>

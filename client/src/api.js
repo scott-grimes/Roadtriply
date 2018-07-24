@@ -117,6 +117,7 @@ module.exports = {
         username,
         password
       })
-      .then(result => result.data[0]);
+      .then(result => result.data)
+      .catch(err=>console.log(err));
   }
 };

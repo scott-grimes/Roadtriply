@@ -6,11 +6,15 @@ const self = module.exports = {
   // USER THINGS
   
   // Returns a user based on their id
-  getUser : (id)=> 
+  getUserById : (id)=> 
      knex('users')
-    .where('id', id)
+    .where({id})
     .select().first()
   ,
+
+  getUserByName: (username) => knex('users')
+    .where({username})
+    .select().first(),
   // Add User
   addUser :  (username,password,email,phone) => 
      knex('users').where('username',username).select().first()

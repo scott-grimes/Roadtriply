@@ -2,25 +2,29 @@ require("dotenv").config();
 const path = require("path");
 const express = require("express");
 const bodyParser = require("body-parser");
-//const { passport } = require("./passport");
+const { passport } = require("./passport");
 const passenger = require("./routes/passenger");
 const ride = require("./routes/ride");
 const rides = require("./routes/rides");
 const user = require("./routes/user");
+const login = require("./routes/login");
+const logout = require("./routes/logout");
 const port = process.env.PORT || 1337;
 
 // SETUP
 const app = express();
 app.use(bodyParser.json());
-//app.use(require('express-session')({ secret: 'keyboard cat', resave: false, saveUninitialized: false }));
-//app.use(passport.initialize());
-//app.use(passport.session());
+app.use(require('express-session')({ secret: 'keyboard cat', resave: false, saveUninitialized: false }));
+app.use(passport.initialize());
+app.use(passport.session());
 
 // ENDPOINTS
 app.use("/user", user);
 app.use("/ride", ride);
 app.use("/rides", rides);
 app.use("/passenger", passenger);
+app.use("/login", login);
+app.use('/logout', logout)
 
 app.get("/test", (req, res) => {
   console.log(req.body);
@@ -139,19 +143,7 @@ app.listen(port, () => console.log(`Listening on port ${port}`));
 // });
 
 
-// app.post('/login', (req,res)=>{
-//     const {email, fbid} = req.body;
 
-//     if(!email || !fbid){
-//       res.status(400).send();
-//       return;
-//     }
-//     knex('users')
-//     .where({'fbid':fbid,'email':email})
-//     .select('*')
-//     .then(result=>{
-//       res.send(result)
-//     })
 
 
 // });
