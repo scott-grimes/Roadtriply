@@ -111,10 +111,10 @@ module.exports = {
       });
   },
 
-  login: (email, password) => {
+  login: ({username, password}) => {
     return axios
       .post("/login", {
-        email,
+        username,
         password
       })
       .then(result => result.data[0]);

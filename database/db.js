@@ -185,6 +185,7 @@ const self = module.exports = {
     );
   },
 
+  //INTERNAL?
   // Returns num of free slots a ride has
   getFreeSlots : (rideid)=>{
     let ride;
