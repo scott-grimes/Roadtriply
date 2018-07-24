@@ -17,13 +17,16 @@ class App extends React.Component {
       user: null
     }
    
-    this.changeUser = (x)=>{
-      this.setState({user:x}, ()=>{
-      console.log('in index, should not push history')
-      })};
+
       this.logout = this.logout.bind(this);
-    // this.changeUser = this.changeUser.bind(this);
+     this.changeUser = this.changeUser.bind(this);
     // this.updateUserRides = this.updateUserRides.bind(this);
+  }
+
+  changeUser(x){
+      this.setState({ user: x }, () => {
+        console.log('in index, should not push history')
+      })
   }
 
   logout(){
@@ -42,17 +45,17 @@ class App extends React.Component {
   // }
 
   render () {
-    const user = this.state.user;
+    const { user } = this.state;
     console.log(this.state)
     let search = () => <SearchBar user={user} changeUser={this.changeUser} />;
   
-    let account = ()=> <Account drivingRides = {this.state.drivingRides} ridingRides = {this.state.ridingRides} user={user}/>;
+    let account = ()=> <Account user={user}/>;
     
     
    
-    let addRide =()=> <AddRide user = {this.state.user} />;
+    let addRide =()=> <AddRide user = {user} />;
     
-    let ride =()=> <Ride ride={ride} user={this.state.user} />;
+    let ride =()=> <Ride ride={ride} user={user} />;
 
     return <Router>
         <div>
