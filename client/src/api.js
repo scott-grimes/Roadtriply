@@ -91,14 +91,14 @@ module.exports = {
         params:{id}
       })
       .then(res => res.data)
-      .catch(err => console.log(err));
+      .catch(err => {console.log(err); return [];});
   },
 
   getRidingRides: id => {
     return axios
       .get("/rides/passengerid", { params:{id} })
       .then(res => res.data)
-      .catch(err => console.log(err));
+      .catch(err => { console.log(err); return []; });
   },
 
   logout: () => {
