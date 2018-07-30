@@ -8,6 +8,7 @@ import Register from './components/Register.jsx';
 import Login from './components/Login.jsx';
 import Ride from './components/Ride.jsx';
 import api from './api';
+import Quote from "./components/Quote.jsx";
 
 class App extends React.Component {
   constructor(props) {
@@ -79,13 +80,15 @@ class App extends React.Component {
     }
 
     const mainstyle = {
-      backgroundRepeat: 'no-repeat', backgroundSize: 'contain', margin:'auto', 'padding-top':'100px', float: 'center', 'margin-top':'30px', width:'80%', backgroundImage: 'url("map.png")', height:'700px'}
-    return (<div><div></div>
-      <Navbar renderPage = {this.renderPage} user = {user}/>
-      <div style={mainstyle}>
-      {page}
-      </div>
-    </div>)
+      backgroundRepeat: 'no-repeat', backgroundSize: 'contain', margin:'auto', 'paddingTop':'100px', float: 'center', 'marginTop':'30px', width:'80%', backgroundImage: 'url("map.png")', height:'500px'}
+    return <div>
+        <Navbar renderPage={this.renderPage} user={user} />
+        <div style={mainstyle}>{page}</div>
+        <div style={{ textAlign: "center", margin: "auto" }}>
+          <Quote image={'url("people.jpg")'} quote={`You've saved me a ton of money<br>on my visits home from college!<br><br>-Sarah`} />
+          <Quote image={'url("backpacker.jpg")'} quote={`I've met so many new friends while traveling,<br>I recommend this to all my friends!<br><br>-Brad`} />
+        </div>
+      </div>;
   }
 }
 

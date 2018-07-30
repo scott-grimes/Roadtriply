@@ -73,8 +73,8 @@ class SearchBar extends React.Component{
   }
   render(){
     const barstyle = {
-      'border-style': 'solid',
-      'border-width': '1px', height:'70px', width:'80%', margin: 'auto', 'text-align': 'center', position:'relative', 'background-color':'azure', 'border-radius':'10px', 'padding-top':'5px', 'margin-top':'50px'}
+      'borderStyle': 'solid',
+      'borderWidth': '1px', height:'70px', width:'80%', margin: 'auto', 'textAlign': 'center', position:'relative', 'backgroundColor':'azure', 'borderRadius':'10px', 'paddingTop':'5px', 'marginTop':'50px'}
     const selectStyle = { width: '200px', display:'inline-block', margin:'5px'}
     if(!this.state.use2dates){
       return <div style={barstyle}>

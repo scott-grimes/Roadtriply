@@ -23,7 +23,7 @@ componentWillReceiveProps(nextProps) {
 render(){
 
   const style = { 'display': 'inline', 'margin': '10px' }
-  const logo = { 'display': 'inline', float: 'left', margin: '5px', 'font-weight':'bold'}
+  const logo = { 'display': 'inline', float: 'left', margin: '5px', 'fontWeight':'bold'}
   const elright = { 'display': 'inline', float: 'right' , margin:'5px'}
   const elleft = { 'display': 'inline', float: 'left', margin: '5px'}
   
