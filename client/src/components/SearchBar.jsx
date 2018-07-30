@@ -3,9 +3,12 @@ import React from 'react';
 import {cities} from '../../../lib/citylist';
 import api from '../api';
 import SearchResults from './SearchResults.jsx';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import Select from "react-select";
 const moment = require('moment')
 cities.sort();
-console.log(api)
+const options = cities.map(city=>{return {label:city, value:city}})
 const HOUR = 1000*60*60;
 const DAY = HOUR*24;
 
@@ -25,9 +28,12 @@ class SearchBar extends React.Component{
       depttimeEND:now,
       maxdate,
       results : null,
-      user: props.user
+      user: props.user,
+      fromloc:'',
+      toloc:'',
     }
-    this.handleChange = this.handleChange.bind(this)
+    this.fromChange = this.fromChange.bind(this);
+    this.toChange = this.toChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -36,16 +42,22 @@ class SearchBar extends React.Component{
   }
 
 
-  handleChange(e){
-    e.preventDefault();
+  fromChange(e) {
+    this.setState({ fromloc: e.value });
+  }
 
+  toChange(e) {
+    this.setState({ toloc: e.value });
+  }
+
+  depttimeChange(e){
+    console.log(e);
   }
 
   handleSubmit(e){
 
     e.preventDefault();
-    const fromloc = document.getElementById('fromdest').value
-    const toloc = document.getElementById('todest').value
+    const {fromloc, toloc} = this.state;
     let depttimeBEGIN = document.getElementById('depttimeBEGIN').value
     let depttime = moment.utc(depttimeBEGIN);
     if(fromloc==='Select' || toloc==='Select'){
@@ -60,34 +72,26 @@ class SearchBar extends React.Component{
 
   }
   render(){
-
-    const bdate = this.state.depttimeBEGIN
+    const barstyle = {
+      'border-style': 'solid',
+      'border-width': '1px', height:'70px', width:'80%', margin: 'auto', 'text-align': 'center', position:'relative', 'background-color':'azure', 'border-radius':'10px', 'padding-top':'5px', 'margin-top':'50px'}
+    const selectStyle = { width: '200px', display:'inline-block', margin:'5px'}
     if(!this.state.use2dates){
-      return (
-        <div>
-          <form onSubmit={this.handleSubmit}>
-          From:<select defaultValue="Select" required id="fromdest">
-          <option disabled hidden>Select</option>
-          {
-            cities.map((city,idx)=><option key={idx} value={city}>{city}</option>)
-          }
-          </select>
-          To:<select defaultValue="Select" required id="todest">
-          <option  disabled hidden>Select</option>
-          {
-            cities.map((city,idx)=><option key={idx} value={city}>{city}</option>)
-          }
-          </select>
-          Departing:
-          <input type="date" required id="depttimeBEGIN"
-               onChange={this.handleChange}
-               defaultValue={bdate}
-               min={this.state.today} max={this.state.maxdate} />
-          <input type="submit" value="submit"></input>
+      return <div style={barstyle}>
+          <form onSubmit={this.handleSubmit} style={{margin:'auto'}}>
+          <div style={selectStyle}>
+            <Select  placeholder={"From"}  options={options} onChange={this.fromChange} />
+            </div><div style={selectStyle}>
+          <Select style={selectStyle} placeholder={"To"}  options={options} onChange={this.toChange} />
+          </div>
+
+            <TextField id="date" label="Departing" type="date" defaultValue={this.state.depttimeBEGIN} InputLabelProps={{ shrink: true }} inputProps={{ min: this.state.today, max: this.state.maxdate }} onChange={this.depttimeChange} />
+
+            <Button type="submit">Submit</Button>
           </form>
-          <div id="message" style={{'height':'30px'}}></div>
-          <SearchResults user = {this.state.user} results = {this.state.results}/>
-        </div>)
+          <div id="message" style={{ height: "30px" }} />
+          <SearchResults user={this.state.user} results={this.state.results} />
+        </div>;
         }
     
       }

@@ -54,7 +54,7 @@ class App extends React.Component {
 
   render () {
     const p = this.state.page;
-    console.log(p)
+    
     const user = this.state.user;
     let page = <SearchBar user={user} changeUser={this.changeUser}/>;
     if(p==='account'){
@@ -77,9 +77,14 @@ class App extends React.Component {
       console.log(ride);
       page = <Ride ride={ride} user={this.state.user} />;
     }
+
+    const mainstyle = {
+      backgroundRepeat: 'no-repeat', backgroundSize: 'contain', margin:'auto', 'padding-top':'100px', float: 'center', 'margin-top':'30px', width:'80%', backgroundImage: 'url("map.png")', height:'700px'}
     return (<div><div></div>
       <Navbar renderPage = {this.renderPage} user = {user}/>
+      <div style={mainstyle}>
       {page}
+      </div>
     </div>)
   }
 }

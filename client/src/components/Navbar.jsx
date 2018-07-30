@@ -22,25 +22,31 @@ componentWillReceiveProps(nextProps) {
 
 render(){
 
-  const style = {'display':'inline', 'margin': '5px'}
+  const style = { 'display': 'inline', 'margin': '10px' }
+  const logo = { 'display': 'inline', float: 'left', margin: '5px', 'font-weight':'bold'}
+  const elright = { 'display': 'inline', float: 'right' , margin:'5px'}
+  const elleft = { 'display': 'inline', float: 'left', margin: '5px'}
   
   if(this.state.user===null){
     return (
-      <div style={style} className="navbar"><h1>roadtriply</h1>
-        <div style={style}  id='search' onClick={this.linkHandler}>Search</div>
-        <div style={style} id='login' onClick={this.linkHandler}>Login</div>
-        <div style={style} id='register' onClick={this.linkHandler}>Register</div>
+
+        <div style={style} className="navbar">
+        <div style={logo}>roadtriply</div>
+        <div style={elright}id='search' onClick={this.linkHandler}>Search</div>
+        <div style={elright} id='login' onClick={this.linkHandler}>Login</div>
+        <div style={elright} id='register' onClick={this.linkHandler}>Register</div>
       </div>
     );
   }else{
     return (
-      <div style={style} className="navbar"><h1>roadtriply</h1>
-      <div style={style} id='search' onClick={this.linkHandler}>Search</div>
-      <div style={style} id='addride' onClick={this.linkHandler}>Create Ride</div>
-      <div style={style} id='account' onClick={this.linkHandler}>Account</div>
-      <div style={style} >{this.state.user.username}</div>
-      <div style={style} id='logout' onClick={this.linkHandler}>Logout</div>
-      
+ 
+      <div style={style} className="navbar">
+        <div style={logo}>roadtriply</div>
+        <div style={elright} id='search' onClick={this.linkHandler}>Search</div>
+        <div style={elright} id='addride' onClick={this.linkHandler}>Create Ride</div>
+        <div style={elright} id='account' onClick={this.linkHandler}>Account</div>
+        <div style={elright} >{this.state.user.username}</div>
+        <div style={elright} id='logout' onClick={this.linkHandler}>Logout</div>
       </div>
       );
     }
